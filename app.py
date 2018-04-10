@@ -1,8 +1,16 @@
 from flask import Flask,render_template
 import commands
+import urllib2
+import json
+
 
 
 app = Flask(__name__,static_url_path='/static')
+
+def getip():
+    myip = urllib2.urlopen('http://members.3322.org/dyndns/getip').read()
+    myip = myip.strip()
+    return str(myip)
 
 
 
@@ -18,6 +26,10 @@ def app_page():
 @app.route('/log.html')
 def log_page():
     return render_template("log.html")
+
+@app.route('/config.html')
+def config_page():
+    return render_template("config.html")
 
 
 @app.route('/get_log')

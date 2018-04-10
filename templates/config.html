@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>V2ray.fun - 连接配置</title>
+    <link rel="stylesheet" href="/static/css/mdui.min.css">
+    <script src="/static/js/mdui.min.js"></script>
+</head>
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded mdui-drawer-body-left">
+
+<header class="mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
+        <a href="./" class="mdui-typo-headline mdui-hidden-xs">V2ray.fun</a>
+        <a href="" class="mdui-typo-title">连接配置</a>
+        <div class="mdui-toolbar-spacer"></div>
+        <a href="https://github.com/FunctionClub/" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: 'Github'}">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
+        <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5
+	c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1
+	c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4
+	c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7
+	c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5
+	c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z"></path>
+      </svg>
+        </a>
+    </div>
+</header>
+
+<div class="mdui-drawer" id="main-drawer">
+    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+        <div class="mdui-collapse-item mdui-collapse-item-open">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
+                <div class="mdui-list-item-content">控制面板</div>
+                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+            </div>
+            <div class="mdui-collapse-item-body mdui-list">
+                <a href="index.html" class="mdui-list-item mdui-ripple">运行状态</a>
+                <a href="config.html" class="mdui-list-item mdui-ripple  mdui-list-item-active">修改连接</a>
+                <a href="app.html" class="mdui-list-item mdui-ripple">软件下载</a>
+                <a href="log.html" class="mdui-list-item mdui-ripple">运行日志</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="mdui-container doc-container doc-no-cover">
+
+    <div class="mdui-container">
+        <p></p>
+        <div class="mdui-row">
+            <div class="mdui-col-md-12">
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table">
+                        <thead>
+                        <tr>
+                            <th style="min-width: 120px;">参数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>运行控制</td>
+                            <td>
+                                <div class="mdui-chip">
+                                    <span class="mdui-chip-icon mdui-color-green"><i class="mdui-icon material-icons">play_arrow</i></span>
+                                    <span class="mdui-chip-title">启动</span>
+                                </div>
+                                <div class="mdui-chip">
+                                    <span class="mdui-chip-icon mdui-color-red"><i class="mdui-icon material-icons">stop</i></span>
+                                    <span class="mdui-chip-title">停止</span>
+                                </div>
+                                <div class="mdui-chip">
+                                    <span class="mdui-chip-icon mdui-color-yellow-700"><i class="mdui-icon material-icons">settings_backup_restore</i></span>
+                                    <span class="mdui-chip-title">重启</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>主端口</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-4" style="margin: 3px">
+                                        <input id="port" class="mdui-textfield-input" type="text" placeholder="端口号" value="1234"/>
+                                    </div>
+                                    <div class="mdui-col-md-4">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改端口</button>
+                                    </div>
+                                </div>
+
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>加密方式</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-4" style="margin: 3px">
+                                        <select class="mdui-select" mdui-select>
+                                            <option value="1"> auto (自动选择)</option>
+                                            <option value="2"> aes-128-cfb </option>
+                                            <option value="3"> aes-128-gcm </option>
+                                            <option value="4"> chacha20-poly1305</option>
+                                            <option value="5"> none (不加密) </option>
+                                        </select>
+                                    </div>
+                                    <div class="mdui-col-md-4">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改加密</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>传输方式</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-4" style="margin: 3px">
+                                        <select class="mdui-select" mdui-select>
+                                            <option value="1">TCP</option>
+                                            <option value="2">WebSocket</option>
+                                            <option value="3">KCP</option>
+                                            <option value="4">KCP srtp</option>
+                                            <option value="5">KCP utp</option>
+                                            <option value="6">KCP wechat</option>
+                                        </select>
+                                    </div>
+                                    <div class="mdui-col-md-4">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改传输</button>
+                                        <i class="mdui-icon material-icons mdui-text-color-grey-400" mdui-dialog="{target: '#trans-helper'}">info</i>
+                                        <div class="mdui-dialog" id="trans-helper">
+                                            <div class="mdui-dialog-title">传输方式说明</div>
+                                            <div class="mdui-dialog-content">
+                                                <b>TCP</b>：默认传输协议<br>
+                                                <b>WebSocket</b>：Websocket 传输协议<br>
+                                                <b>KCP</b>：普通 mKCP 传输协议<br>
+                                                <b>KCP srtp</b>：mKCP 伪装 FaceTime 通话协议<br>
+                                                <b>KCP utp</b>：mKCP 伪装 BT 数据协议<br>
+                                                <b>KCP wechat</b>：mKCP 伪装微信数据协议<br>
+
+                                            </div>
+                                            <div class="mdui-dialog-actions">
+                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close="">确认</button>                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TLS</td>
+                            <td><i class="mdui-icon material-icons mdui-text-color-green">check</i>ON
+                                <i class="mdui-icon material-icons mdui-text-color-red">clear</i>Off
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mux.cool</td>
+                            <td><i class="mdui-icon material-icons mdui-text-color-green">check</i>ON
+                                <i class="mdui-icon material-icons mdui-text-color-red">clear</i>Off
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p></p>
+
+</div>
+
+<div class="doc-footer-nav mdui-color-theme">
+    <div class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-col-xs-12 mdui-col-sm-12 doc-footer-nav-left">
+                <p class="mdui-text-center">@Function Club</p>
+                <p class="mdui-text-center">2016 - 2018</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
