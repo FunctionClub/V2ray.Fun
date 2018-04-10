@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>V2ray.fun - 连接配置</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/css/mdui.min.css">
     <script src="/static/js/mdui.min.js"></script>
 </head>
@@ -13,12 +14,15 @@
 
 <header class="mdui-appbar mdui-appbar-fixed">
     <div class="mdui-toolbar mdui-color-theme">
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}"><i class="mdui-icon material-icons">menu</i></span>
+        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}">
+            <i class="mdui-icon material-icons">menu</i></span>
         <a href="./" class="mdui-typo-headline mdui-hidden-xs">V2ray.fun</a>
         <a href="" class="mdui-typo-title">连接配置</a>
         <div class="mdui-toolbar-spacer"></div>
-        <a href="https://github.com/FunctionClub/" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: 'Github'}">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
+        <a href="https://github.com/FunctionClub/" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+           mdui-tooltip="{content: 'Github'}">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36"
+                 enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
         <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5
 	c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1
 	c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4
@@ -67,17 +71,43 @@
                         <tr>
                             <td>运行控制</td>
                             <td>
-                                <div class="mdui-chip">
-                                    <span class="mdui-chip-icon mdui-color-green"><i class="mdui-icon material-icons">play_arrow</i></span>
-                                    <span class="mdui-chip-title">启动</span>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-3">
+                                        <div class="mdui-chip" onclick="start_service()">
+                                            <span class="mdui-chip-icon mdui-color-green"><i class="mdui-icon material-icons">play_arrow</i></span>
+                                            <span class="mdui-chip-title">启动</span>
+                                        </div>
+                                    </div>
+                                    <div class="mdui-col-md-3">
+                                        <div class="mdui-chip" onclick="stop_service()">
+                                            <span class="mdui-chip-icon mdui-color-red"><i class="mdui-icon material-icons">stop</i></span>
+                                            <span class="mdui-chip-title">停止</span>
+                                        </div>
+                                    </div>
+                                    <div class="mdui-col-md-3">
+                                        <div class="mdui-chip" onclick="restart_service()">
+                                            <span class="mdui-chip-icon mdui-color-yellow-700"><i class="mdui-icon material-icons">settings_backup_restore</i></span>
+                                            <span class="mdui-chip-title">重启</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mdui-chip">
-                                    <span class="mdui-chip-icon mdui-color-red"><i class="mdui-icon material-icons">stop</i></span>
-                                    <span class="mdui-chip-title">停止</span>
-                                </div>
-                                <div class="mdui-chip">
-                                    <span class="mdui-chip-icon mdui-color-yellow-700"><i class="mdui-icon material-icons">settings_backup_restore</i></span>
-                                    <span class="mdui-chip-title">重启</span>
+
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>UUID</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-6">
+                                        <input class="mdui-textfield-input" type="text" readonly="readonly" value="b18d3377-e0bd-49c6-9194-892326c9bbb0" maxlength="10px"/>
+                                    </div>
+                                    <div class="mdui-col-md-1">
+                                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" >
+                                            <i class="mdui-icon material-icons">autorenew</i>
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -88,8 +118,10 @@
                                     <div class="mdui-col-md-4" style="margin: 3px">
                                         <input id="port" class="mdui-textfield-input" type="text" placeholder="端口号" value="1234"/>
                                     </div>
-                                    <div class="mdui-col-md-4">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改端口</button>
+                                    <div class="mdui-col-md-2"></div>
+                                    <div class="mdui-col-md-1">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple"
+                                                onclick="change_port()">修改端口</button>
                                     </div>
                                 </div>
 
@@ -110,14 +142,32 @@
                                             <option value="5"> none (不加密) </option>
                                         </select>
                                     </div>
-                                    <div class="mdui-col-md-4">
+                                    <div class="mdui-col-md-2"></div>
+                                    <div class="mdui-col-md-1">
                                         <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改加密</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>传输方式</td>
+                            <td>传输方式
+                                <i class="mdui-icon material-icons mdui-text-color-grey-400" mdui-dialog="{target: '#trans-helper'}">info</i>
+                                <div class="mdui-dialog" id="trans-helper">
+                                    <div class="mdui-dialog-title">传输方式说明</div>
+                                    <div class="mdui-dialog-content">
+                                        <b>TCP</b>：默认传输协议<br>
+                                        <b>WebSocket</b>：Websocket 传输协议<br>
+                                        <b>KCP</b>：普通 mKCP 传输协议<br>
+                                        <b>KCP srtp</b>：mKCP 伪装 FaceTime 通话协议<br>
+                                        <b>KCP utp</b>：mKCP 伪装 BT 数据协议<br>
+                                        <b>KCP wechat</b>：mKCP 伪装微信数据协议<br>
+
+                                    </div>
+                                    <div class="mdui-dialog-actions">
+                                        <button class="mdui-btn mdui-ripple" mdui-dialog-close="">确认</button>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-4" style="margin: 3px">
@@ -130,37 +180,70 @@
                                             <option value="6">KCP wechat</option>
                                         </select>
                                     </div>
-                                    <div class="mdui-col-md-4">
+                                    <div class="mdui-col-md-2"></div>
+                                    <div class="mdui-col-md-1">
                                         <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改传输</button>
-                                        <i class="mdui-icon material-icons mdui-text-color-grey-400" mdui-dialog="{target: '#trans-helper'}">info</i>
-                                        <div class="mdui-dialog" id="trans-helper">
-                                            <div class="mdui-dialog-title">传输方式说明</div>
-                                            <div class="mdui-dialog-content">
-                                                <b>TCP</b>：默认传输协议<br>
-                                                <b>WebSocket</b>：Websocket 传输协议<br>
-                                                <b>KCP</b>：普通 mKCP 传输协议<br>
-                                                <b>KCP srtp</b>：mKCP 伪装 FaceTime 通话协议<br>
-                                                <b>KCP utp</b>：mKCP 伪装 BT 数据协议<br>
-                                                <b>KCP wechat</b>：mKCP 伪装微信数据协议<br>
-
-                                            </div>
-                                            <div class="mdui-dialog-actions">
-                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close="">确认</button>                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>TLS</td>
-                            <td><i class="mdui-icon material-icons mdui-text-color-green">check</i>ON
-                                <i class="mdui-icon material-icons mdui-text-color-red">clear</i>Off
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-6">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-green-500
+                                         mdui-ripple mdui-text-color-white" mdui-dialog="{target: '#tls_config'}"  >
+                                            开启
+                                        </button>
+                                        <div class="mdui-dialog" id="tls_config">
+                                            <div class="mdui-dialog-title">TLS 设置</div>
+                                            <div class="mdui-dialog-content">
+
+                                                <p><strong>* </strong> 请务必将您的域名先解析到本台服务器！否则无法自动获取SSL证书！</p>
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-6">
+                                                            <input class="mdui-textfield-input" placeholder="请输入域名（无需http://）" value="" />
+                                                    </div>
+                                                    <div class="mdui-col-md-2">
+                                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="">检测域名解析</button>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="mdui-dialog-actions">
+                                                <button disabled class="mdui-btn mdui-ripple" mdui-dialog-close=""
+                                                        onclick="alert('确认')">确认</button>
+                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close="">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mdui-col-md-2">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
+                                            关闭
+                                        </button>
+                                    </div>
+                                </div>
+
+
                             </td>
                         </tr>
                         <tr>
                             <td>Mux.cool</td>
-                            <td><i class="mdui-icon material-icons mdui-text-color-green">check</i>ON
-                                <i class="mdui-icon material-icons mdui-text-color-red">clear</i>Off
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-6">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-green-500 mdui-ripple mdui-text-color-white" >
+                                            开启
+                                        </button>
+                                    </div>
+                                    <div class="mdui-col-md-2">
+                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
+                                            关闭
+                                        </button>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
@@ -184,6 +267,85 @@
         </div>
     </div>
 </div>
-
+<div class="mdui-hidden" id="hidden">hidden</div>
 </body>
+
+
+<script type="text/javascript">
+
+    function isAllNaN(str) {
+        for (var i = 0; i < str.length; i++)
+        {
+            if(isNaN(str.charAt(i)))
+            {
+                return false;
+            }
+            if (str.charAt(i) === ' ')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function change_port() {
+        let port = document.getElementById('port').value;
+
+        if(!isAllNaN(port))
+        {
+            mdui.alert('端口号只能为数字');
+        }
+        else
+        {
+            var port_num = parseInt(port);
+            if (port_num === 22 || port_num < 0 || port_num > 65535)
+            {
+                mdui.alert("端口号只能在 0 - 65535 之间");
+            }
+            else
+            {
+                $.get("/set_port",{
+                    setport : port_num
+                })
+            }
+        }
+    }
+
+    function start_service() {
+        $.get("/start_service");
+        mdui.snackbar(
+            {
+                message : "服务已启动",
+                position : "right-top"
+            }
+        )
+    }
+
+    function stop_service() {
+        $.get("/stop_service");
+        mdui.snackbar(
+            {
+                message : "服务已停止",
+                position : "right-top"
+            }
+        )
+    }
+
+    function restart_service() {
+        $.get("/restart_service");
+        mdui.snackbar(
+            {
+                message : "服务已重启",
+                position : "right-top"
+            }
+        )
+    }
+    
+    function set_() {
+        
+    }
+
+
+</script>
+
 </html>
