@@ -101,9 +101,9 @@
                             <td>
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-6">
-                                        <input class="mdui-textfield-input" type="text" readonly="readonly" value="b18d3377-e0bd-49c6-9194-892326c9bbb0" maxlength="10px"/>
+                                        <input id="uuid" class="mdui-textfield-input" type="text" readonly="readonly" value="b18d3377-e0bd-49c6-9194-892326c9bbb0" maxlength="10px"/>
                                     </div>
-                                    <div class="mdui-col-md-1">
+                                    <div class="mdui-col-md-1" onclick="change_uuid()">
                                         <button class="mdui-btn mdui-color-theme-accent mdui-ripple" >
                                             <i class="mdui-icon material-icons">autorenew</i>
                                         </button>
@@ -134,17 +134,19 @@
                             <td>
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-4" style="margin: 3px">
-                                        <select class="mdui-select" mdui-select>
+                                        <form id="encrypt_form" action="##">
+                                        <select name="encrypt" class="mdui-select" mdui-select>
                                             <option value="1"> auto (自动选择)</option>
                                             <option value="2"> aes-128-cfb </option>
                                             <option value="3"> aes-128-gcm </option>
                                             <option value="4"> chacha20-poly1305</option>
                                             <option value="5"> none (不加密) </option>
                                         </select>
+                                        </form>
                                     </div>
                                     <div class="mdui-col-md-2"></div>
                                     <div class="mdui-col-md-1">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改加密</button>
+                                        <button onclick="change_encrypt()" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改加密</button>
                                     </div>
                                 </div>
                             </td>
@@ -171,7 +173,8 @@
                             <td>
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-4" style="margin: 3px">
-                                        <select class="mdui-select" mdui-select>
+                                        <form id="trans_form" action="##">
+                                        <select name="trans" class="mdui-select" mdui-select>
                                             <option value="1">TCP</option>
                                             <option value="2">WebSocket</option>
                                             <option value="3">KCP</option>
@@ -179,10 +182,11 @@
                                             <option value="5">KCP utp</option>
                                             <option value="6">KCP wechat</option>
                                         </select>
+                                        </form>
                                     </div>
                                     <div class="mdui-col-md-2"></div>
                                     <div class="mdui-col-md-1">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改传输</button>
+                                        <button onclick="change_trans()" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改传输</button>
                                     </div>
                                 </div>
                             </td>
@@ -199,28 +203,42 @@
                                         <div class="mdui-dialog" id="tls_config">
                                             <div class="mdui-dialog-title">TLS 设置</div>
                                             <div class="mdui-dialog-content">
-
-                                                <p><strong>* </strong> 请务必将您的域名先解析到本台服务器！否则无法自动获取SSL证书！</p>
                                                 <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
+                                                    <p><strong>* </strong> 请务必将您的域名先解析到本台服务器！否则无法自动获取SSL证书！</p>
+                                                </div>
+                                                <p></p>
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
                                                     <div class="mdui-col-md-6">
-                                                            <input class="mdui-textfield-input" placeholder="请输入域名（无需http://）" value="" />
+                                                            <input id="input_domain" class="mdui-textfield-input" placeholder="请输入域名（无需http://）" value="" />
                                                     </div>
                                                     <div class="mdui-col-md-2">
-                                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="">检测域名解析</button>
+                                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="check_domain()">检测域名解析</button>
+                                                    </div>
+                                                </div>
+                                                <p></p>
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
+                                                    <div class="mdui-col-md-8">
+                                                        <div id="domain-progress" hidden class="mdui-progress">
+                                                            <div class="mdui-progress-indeterminate"></div>
+                                                        </div>
                                                     </div>
 
                                                 </div>
 
                                             </div>
                                             <div class="mdui-dialog-actions">
-                                                <button disabled class="mdui-btn mdui-ripple" mdui-dialog-close=""
-                                                        onclick="alert('确认')">确认</button>
-                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close="">取消</button>
+                                                <button id="confirm_tls" disabled class="mdui-btn mdui-ripple" mdui-dialog-close=""
+                                                        onclick="change_TLS('on');document.getElementById('confirm_tls').setAttribute('disabled','disabled');">确认</button>
+                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close=""
+                                                        onclick="document.getElementById('confirm_tls').setAttribute('disabled','disabled');">取消</button>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mdui-col-md-2">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
+                                        <button onclick="change_TLS('off')" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
                                             关闭
                                         </button>
                                     </div>
@@ -234,12 +252,12 @@
                             <td>
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-6">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-green-500 mdui-ripple mdui-text-color-white" >
+                                        <button onclick="change_mux('on')" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-green-500 mdui-ripple mdui-text-color-white" >
                                             开启
                                         </button>
                                     </div>
                                     <div class="mdui-col-md-2">
-                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
+                                        <button onclick="change_mux('off')" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-red-500 mdui-ripple mdui-text-color-white" >
                                             关闭
                                         </button>
                                     </div>
@@ -267,11 +285,19 @@
         </div>
     </div>
 </div>
-<div class="mdui-hidden" id="hidden">hidden</div>
 </body>
 
 
 <script type="text/javascript">
+
+    function message(m_message) {
+        mdui.snackbar(
+            {
+                message : m_message,
+                position : "right-top"
+            }
+        )
+    }
 
     function isAllNaN(str) {
         for (var i = 0; i < str.length; i++)
@@ -286,6 +312,16 @@
             }
         }
         return true;
+    }
+
+    function change_uuid() {
+        let new_uuid = uuid();
+        $.get("/set_uuid",{
+            "setuuid" : new_uuid
+        })
+
+        message("已生成新UUID");
+        $('#uuid').attr("value",new_uuid);
     }
 
     function change_port() {
@@ -307,43 +343,115 @@
                 $.get("/set_port",{
                     setport : port_num
                 })
+                message("端口已修改")
             }
+        }
+    }
+
+    function change_encrypt() {
+        $.get("/set_encrypt",$('#encrypt_form').serialize());
+        message("加密方式已修改")
+    }
+
+    function change_trans() {
+        $.get("/set_trans",$('#trans_form').serialize());
+        message("传输方式已修改")
+    }
+
+    function change_TLS(action) {
+        let domain = document.getElementById('input_domain').value;
+        if (action === "off")
+        {
+            $.get("/set_tls",{
+                "action" : "off",
+                "domain" : "none"
+            });
+            message("TLS 已关闭")
+        }
+        else
+        {
+            $.get("/set_tls",{
+                "action" : "on",
+                "domain" : domain
+            });
+            message("TLS 已开启")
+        }
+    }
+
+    function change_mux(action) {
+        if (action === "on")
+        {
+            $.get("/set_mux",{
+                "action" : "on",
+            });
+            message("Mux.cool 已开启")
+        }
+        else if(action === "off")
+        {
+            $.get("/set_mux",{
+                "action" : "off",
+            });
+            message("Mux.cool 已关闭")
+        }
+    }
+
+    function check_domain() {
+        let domain = document.getElementById('input_domain').value;
+        if (domain.startsWith("http:"))
+        {
+            alert("请勿输入 http:// ");
+        }
+        else if(domain === "")
+        {
+            alert("请入域名");
+        }
+        else
+        {
+            document.getElementById('domain-progress').removeAttribute('hidden');
+            $.get("/check_domain", { "domain" : domain },
+                function(data){
+                    document.getElementById('domain-progress').setAttribute('hidden','hidden');
+                    if(data === "true")
+                    {
+                        document.getElementById('confirm_tls').removeAttribute('disabled');
+                    }
+                    else
+                    {
+                        alert("请检查域名是否已解析至此服务器，这可能需要等待数分钟");
+                    }
+                });
         }
     }
 
     function start_service() {
         $.get("/start_service");
-        mdui.snackbar(
-            {
-                message : "服务已启动",
-                position : "right-top"
-            }
-        )
+        message("服务已启动")
     }
 
     function stop_service() {
         $.get("/stop_service");
-        mdui.snackbar(
-            {
-                message : "服务已停止",
-                position : "right-top"
-            }
-        )
+        message("服务已停止")
     }
 
     function restart_service() {
         $.get("/restart_service");
-        mdui.snackbar(
-            {
-                message : "服务已重启",
-                position : "right-top"
-            }
-        )
+        message("服务已重启")
     }
-    
-    function set_() {
-        
+
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
     }
+
 
 
 </script>
