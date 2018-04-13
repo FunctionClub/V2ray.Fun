@@ -135,14 +135,14 @@
                             <div class="mdui-row">
                                 <div class="mdui-col-md-12">
                                     <label class="mdui-textfield-label">Vmess：</label>
-                                    <textarea class="mdui-textfield-input" rows="6">vmess://TG9yZW0gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50aW5nIGFuZCB0eXBlc2V0dGluZyBpbmR1c3RyeS4gTG9yZW0gSXBzdW0gaGFzIGJlZW4gdGhlIGluZHVzdHJ5J3Mgc3RhbmRhcmQgZHVtbXkgdGV4dCBldmVyIHNpbmNlIHRoZSAxNTAwcywgd2hlbiBhbiB1bmtub3duIHByaW50ZXIgdG9vayBhIGdhbGxleSBvZiB0eXBlIGI</textarea>
+                                    <textarea id="vmess_link" class="mdui-textfield-input" rows="6">vmess://TG9yZW0gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50aW5nIGFuZCB0eXBlc2V0dGluZyBpbmR1c3RyeS4gTG9yZW0gSXBzdW0gaGFzIGJlZW4gdGhlIGluZHVzdHJ5J3Mgc3RhbmRhcmQgZHVtbXkgdGV4dCBldmVyIHNpbmNlIHRoZSAxNTAwcywgd2hlbiBhbiB1bmtub3duIHByaW50ZXIgdG9vayBhIGdhbGxleSBvZiB0eXBlIGI</textarea>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="mdui-row">
                                 <div class="mdui-col-md-4">
-                                    <img class="mdui-img-rounded" src="https://pan.baidu.com/share/qrcode?w=150&h=150&url=1242374290gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50a0gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50a87489234hjk23b42jk331323123"/>
+                                    <img id="vmess_qr" class="mdui-img-rounded" src="https://pan.baidu.com/share/qrcode?w=150&h=150&url=1242374290gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50a0gSXBzdW0gaXMgc2ltcGx5IGR1bW15IHRleHQgb2YgdGhlIHByaW50a87489234hjk23b42jk331323123"/>
 
                                 </div>
                                 <div class="mdui-col-md-2"></div>
@@ -214,6 +214,28 @@
         {
             document.getElementById('mux_off').removeAttribute('hidden');
         }
+
+        var raw_vmess_link = data["encrypt"] + ":" + data["uuid"] + "@" + data["ip"] + ":" + data["port"];
+
+        var vmess_link = "vmess://" + btoa(raw_vmess_link) + "?network=";
+
+        if(data["trans"].startsWith("mkcp"))
+        {
+            vmess_link += "kcp";
+        }
+        else if(data["tran"].startsWith("websocket"))
+        {
+            vmess_link += "ws";
+        }
+        else if(data["tran"].startsWith("tcp"))
+        {
+            vmess_link += "tcp";
+        }
+        document.getElementById('vmess_link').innerHTML = vmess_link;
+
+        let vmess_qr_src = "https://pan.baidu.com/share/qrcode?w=150&h=150&url="+vmess_link;
+
+        document.getElementById('vmess_qr').setAttribute('src',vmess_qr_src);
 
     });
 </script>

@@ -135,13 +135,6 @@
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-4" style="margin: 3px">
                                         <form id="encrypt_form" action="##">
-                                        <select name="encrypt" class="mdui-select" mdui-select>
-                                            <option value="1"> auto (自动选择)</option>
-                                            <option value="2"> aes-128-cfb </option>
-                                            <option value="3"> aes-128-gcm </option>
-                                            <option value="4"> chacha20-poly1305</option>
-                                            <option value="5"> none (不加密) </option>
-                                        </select>
                                         </form>
                                     </div>
                                     <div class="mdui-col-md-2"></div>
@@ -174,14 +167,6 @@
                                 <div class="mdui-row">
                                     <div class="mdui-col-md-4" style="margin: 3px">
                                         <form id="trans_form" action="##">
-                                        <select name="trans" class="mdui-select" mdui-select>
-                                            <option value="1">TCP</option>
-                                            <option value="2">WebSocket</option>
-                                            <option value="3">KCP</option>
-                                            <option value="4">KCP srtp</option>
-                                            <option value="5">KCP utp</option>
-                                            <option value="6">KCP wechat</option>
-                                        </select>
                                         </form>
                                     </div>
                                     <div class="mdui-col-md-2"></div>
@@ -287,6 +272,42 @@
 </div>
 </body>
 
+<script type="text/javascript">
+    $.get("/get_info", function(return_data){
+        let data = JSON.parse(return_data);
+
+        document.getElementById('uuid').setAttribute('value',data["uuid"]);
+        document.getElementById('port').setAttribute('value',data["port"]);
+
+        var encrypt_hrml ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
+            '<option id="auto" value="1"> auto (自动选择)</option>\n' +
+            '<option id="aes-128-cfb" value="2"> aes-128-cfb </option>\n' +
+            '<option id="aes-128-gcm" value="3"> aes-128-gcm </option>\n' +
+            '<option id="chacha20-poly1305" value="4"> chacha20-poly1305</option>\n' +
+            '<option id="none" value="5"> none (不加密) </option>\n' +
+            '</select>'
+
+        $("#encrypt_form").append(encrypt_hrml);
+        document.getElementById(data['encrypt']).setAttribute('selected','selected');
+
+        var trans_html = '<select name="trans" class="mdui-select" mdui-select>\n' +
+            '               <option id="tcp" value="1">TCP</option>\n' +
+            '               <option id="websocket" value="2">WebSocket</option>\n' +
+            '               <option id="mkcp" value="3">KCP</option>\n' +
+            '               <option id="mkcp-srtp" value="4">KCP srtp</option>\n' +
+            '               <option id="mkcp-utp" value="5">KCP utp</option>\n' +
+            '               <option id="mkcp-wechat" value="6">KCP wechat</option>\n' +
+            '             </select>'
+
+        $("#trans_form").append(trans_html);
+        document.getElementById(data["trans"]).setAttribute('selected','selected');
+
+        mdui.mutation();
+
+
+
+    });
+</script>
 
 <script type="text/javascript">
 
