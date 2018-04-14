@@ -28,11 +28,59 @@ def getip():
     myip = myip.strip()
     return str(myip)
 
+def get_status():
+    cmd = """ps -ef | grep "v2ray" | grep -v grep | awk '{print $2}'"""
+    output = commands.getoutput(cmd)
+    if output=="":
+        return "off"
+    else:
+        return "on"
+
+@app.route('/start_service')
+def start_service():
+    cmd = "service v2ray start"
+    commands.getoutput(cmd)
+    change_config("status","on")
+    return "OK"
+
+@app.route('/stop_service')
+def stop_service():
+    cmd = "service v2ray stop"
+    commands.getoutput(cmd)
+    change_config("status", "off")
+    return "OK"
+
+
+@app.route('/restart_service')
+def restart_service():
+    cmd = "service v2ray restart"
+    commands.getoutput(cmd)
+    change_config("status", "on")
+    return "OK"
+
 
 @app.route('/set_uuid',methods=['GET', 'POST'])
 def set_uuid():
     items = request.args.to_dict()
     change_config("uuid",items['setuuid'])
+    return "OK"
+
+@app.route('/set_tls',methods=['GET', 'POST'])
+def set_tls():
+    items = request.args.to_dict()
+    if(items['action'] == "off"):
+        change_config('tls','off')
+        change_config('tls_domain','none')
+    else:
+        change_config("tls","on")
+        change_config("tls_domain",items['domain'])
+
+    return "OK"
+
+@app.route('/set_mux',methods=['GET', 'POST'])
+def set_mux():
+    items = request.args.to_dict()
+    change_config("mux",items['action'])
     return "OK"
 
 @app.route('/set_port',methods=['GET', 'POST'])
@@ -104,13 +152,16 @@ def check_domain():
 def get_info():
     v2ray_config = open("v2ray.config","r")
     json_content = json.loads(v2ray_config.read())
+    if(json_content['tls'] == "off"):
+        json_content['ip'] = getip()
+    json_content['status'] = get_status()
     json_dump = json.dumps(json_content)
     v2ray_config.close()
     return json_dump
 
 @app.route('/get_log')
 def get_log():
-    file = open('t.txt',"r")
+    file = open('/var/log/v2ray/access.log',"r")
     content = file.read().split("\n")
     min_length = min(15,len(content))
     content = content[-min_length:]
@@ -120,4 +171,5 @@ def get_log():
     return string
 
 if __name__ == '__main__':
-    app.run()
+    app.debug = True
+    app.run(host='0.0.0.0')

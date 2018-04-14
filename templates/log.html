@@ -7,12 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>V2ray.fun - 运行日志</title>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link href="/static/css/prism.css" rel="stylesheet" />
+    <script src="/static/js/prism.js"></script>
     <link rel="stylesheet" href="/static/css/mdui.min.css">
     <script src="/static/js/mdui.min.js"></script>
-    <link rel="stylesheet"
-          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded mdui-drawer-body-left">
 
@@ -36,7 +34,7 @@
 </header>
 
 <div class="mdui-drawer" id="main-drawer">
-    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+    <div class="mdui-list" mdui-collapse="{accordion: true}">
         <div class="mdui-collapse-item mdui-collapse-item-open">
             <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
                 <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
@@ -54,64 +52,41 @@
     </div>
 </div>
 
-<div class="mdui-container doc-container doc-no-cover">
 
     <div class="mdui-container">
         <p></p>
         <div class="mdui-row">
-            <div class="mdui-col-md-12">
-                <div class="mdui-table-fluid">
+            <div class="mdui-table-fluid">
                 <table class="mdui-table">
                     <thead>
                     <tr>
-                        <th>运行日志 (实时刷新)</th>
-                        <div class="mdui-progress">
-                            <div class="mdui-progress-indeterminate"></div>
-                        </div>
+                        <th>
+                            <div class="mdui-row">
+                                运行日志 (实时刷新）
+                            </div>
+                            <div class="mdui-row" style="width: 100%">
+                                <div class="mdui-progress">
+                                    <div class="mdui-progress-indeterminate"></div>
+                                </div>
+                            </div>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                                    <pre><code id="log-content">127.127.88.163 - - [09/Apr/2018 13:45:14] "GET / HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:14] "GET /css/mdui.min.css HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:18] "GET /js/mdui.min.js HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:19] "GET /fonts/roboto/Roboto-Bold.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:19] "GET /fonts/roboto/Roboto-Regular.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:19] "GET /icons/material-icons/MaterialIcons-Regular.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:19] "GET /fonts/roboto/Roboto-Medium.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:26] "GET /fonts/roboto/Roboto-Black.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:26] "GET /fonts/roboto/Roboto-Light.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:28] "GET /fonts/roboto/Roboto-Thin.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:48:17] "GET / HTTP/1.1" 200
-127.127.88.163 - - [09/Apr/2018 13:45:26] "GET /fonts/roboto/Roboto-Light.woff2 HTTP/1.1" 200 -
-127.127.88.163 - - [09/Apr/2018 13:45:28] "GET /fonts/roboto/Roboto-Thin.woff2 HTTP/1.1" 200 -
+                            <tr>
+                                <td>
+                                    <div class="mdui-row" style="width: 100%">
+                                        <pre><code id="log-content" class="language-css"></code></pre>
+                                    </div>
+                                </td>
 
-</code></pre>
-
-                        </td>
-                    </tr>
-
+                            </tr>
                     </tbody>
                 </table>
-                </div>
             </div>
         </div>
     </div>
     <p></p>
-
-</div>
-
-<div class="doc-footer-nav mdui-color-theme">
-    <div class="mdui-container">
-        <div class="mdui-row">
-            <div class="mdui-col-xs-12 mdui-col-sm-12 doc-footer-nav-left">
-                <p class="mdui-text-center">@Function Club</p>
-                <p class="mdui-text-center">2016 - 2018</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 <script type="text/javascript">
