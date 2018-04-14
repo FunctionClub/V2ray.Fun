@@ -91,3 +91,6 @@ if __name__ == '__main__':
         start()
         open_port(data['port'])
         print("面板端口已修改！")
+        
+    stop()
+    start()
