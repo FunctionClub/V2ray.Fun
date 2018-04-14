@@ -214,6 +214,10 @@
                                                     <div class="mdui-col-md-2"></div>
                                                     <p><strong>* </strong> 请务必将您的域名先解析到本台服务器！否则无法自动获取SSL证书！</p>
                                                 </div>
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
+                                                    <p><strong>* </strong> 生成过程可能需要等待 20秒 - 1分钟，请耐心等待！</p>
+                                                </div>
                                                 <p></p>
                                                 <div class="mdui-row">
                                                     <div class="mdui-col-md-2"></div>
@@ -221,7 +225,7 @@
                                                             <input id="input_domain" class="mdui-textfield-input" placeholder="请输入域名（无需http://）" value="" />
                                                     </div>
                                                     <div class="mdui-col-md-2">
-                                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="check_domain()">检测域名解析</button>
+                                                        <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="gen_ssl()">生成证书</button>
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -445,7 +449,7 @@
         }
     }
 
-    function check_domain() {
+    function gen_ssl() {
         let domain = document.getElementById('input_domain').value;
         if (domain.startsWith("http:"))
         {
@@ -458,10 +462,10 @@
         else
         {
             document.getElementById('domain-progress').removeAttribute('hidden');
-            $.get("/check_domain", { "domain" : domain },
+            $.get("/gen_ssl", { "domain" : domain },
                 function(data){
                     document.getElementById('domain-progress').setAttribute('hidden','hidden');
-                    if(data === "true")
+                    if(data === "True")
                     {
                         document.getElementById('confirm_tls').removeAttribute('disabled');
                     }

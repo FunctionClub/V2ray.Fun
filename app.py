@@ -2,12 +2,21 @@
 # -*- coding: utf-8 -*-
 from flask import Flask,render_template,request
 import commands
-import time
+import os
 from Config_Generator import *
+from flask_basicauth import BasicAuth
 
+panel_config_file = open("panel.config","r")
+panel_config = json.loads(panel_config_file.read())
+panel_config_file.close()
 
 
 app = Flask(__name__,static_url_path='/static')
+
+app.config['BASIC_AUTH_USERNAME'] = panel_config['username']
+app.config['BASIC_AUTH_PASSWORD'] = panel_config['password']
+app.config['BASIC_AUTH_FORCE'] = True
+basic_auth = BasicAuth(app)
 
 def change_config(config,value):
     old_config = open("v2ray.config", "r")
@@ -16,7 +25,7 @@ def change_config(config,value):
     old_json[str(config)] = str(value)
 
     config = open("v2ray.config","w")
-    string = str(json.dumps(old_json))
+    string = str(json.dumps(old_json,indent=2))
     config.write(string)
     config.close()
 
@@ -92,6 +101,7 @@ def set_tls():
 def set_mux():
     items = request.args.to_dict()
     change_config("mux",items['action'])
+    gen_client()
     return "OK"
 
 @app.route('/set_port',methods=['GET', 'POST'])
@@ -172,10 +182,6 @@ def log_page():
 def config_page():
     return render_template("config.html")
 
-@app.route('/check_domain')
-def check_domain():
-    time.sleep(2)
-    return "true"
 
 @app.route('/get_info')
 def get_info():
@@ -194,12 +200,47 @@ def get_info():
 def get_log():
     file = open('/var/log/v2ray/access.log',"r")
     content = file.read().split("\n")
-    min_length = min(15,len(content))
+    min_length = min(20,len(content))
     content = content[-min_length:]
     string = ""
     for i in range(min_length):
         string = string + content[i] + "<br>"
     return string
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug = True)
+
+@app.route('/gen_ssl',methods=['GET', 'POST'])
+def gen_ssl():
+    items = request.args.to_dict()
+    domain = str(items['domain'])
+
+    stop_service()
+    cmd = "bash /root/.acme.sh/acme.sh  --issue -d {0} --standalone".format(domain)
+    check_acme = """ps -ef | grep "acme.sh" | grep -v grep | awk '{print $2}'"""
+    commands.getoutput(cmd)
+    acme_status = commands.getoutput(check_acme)
+    while acme_status != "":
+        acme_status = commands.getoutput(check_acme)
+
+    result = os.path.exists("/root/.acme.sh/{0}/fullchain.cer".format(domain))
+    start_service()
+    if result == True:
+        return "True"
+    else:
+        return "False"
+
+
+
+
+data_file = open("v2ray.config", "r")
+data = json.loads(data_file.read())
+data_file.close()
+
+if data['tls'] == "on" and panel_config['use_ssl'] == "on":
+    key_file = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],data['domain'])
+    crt_file = "/root/.acme.sh/{0}/fullchain.cer".format(data['domain'])
+    app.run(host='0.0.0.0', port=panel_config['port'],ssl_context=(crt_file, key_file))
+else:
+    app.run(host='0.0.0.0', port=panel_config['port'])
+
+
+

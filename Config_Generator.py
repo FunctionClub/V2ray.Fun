@@ -40,6 +40,17 @@ def gen_server():
       }
     """)
 
+    server_tls = json.loads("""
+    {
+                "certificates": [
+                    {
+                        "certificateFile": "/path/to/example.domain/fullchain.cer",
+                        "keyFile": "/path/to/example.domain.key"
+                    }
+                ]
+            }
+    """)
+
     server_raw = """
 {
     "log": {
@@ -133,6 +144,13 @@ def gen_server():
         server['inbound']['streamSettings']['wsSettings'] = server_websocket
         server['inbound']['streamSettings']['wsSettings']['headers']['Host'] = data['domain']
 
+    if data['tls'] == "on":
+        server['inbound']['streamSettings']['security'] = "tls"
+        server_tls['certificates'][0]['certificateFile'] = "/root/.acme.sh/{0}/fullchain.cer".format(data['domain'])
+        server_tls['certificates'][0]['keyFile'] = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],data['domain'])
+        server['inbound']['streamSettings']['tlsSettings'] = server_tls
+
+
 
     server_file = open("/etc/v2ray/config.json","w")
     server_file.write(json.dumps(server,indent=2))
@@ -177,7 +195,7 @@ def gen_client():
             "network": "ws"
         },
         "mux": {
-            "enabled": true
+            "enabled": false
         }
     },
     "inboundDetour": null,
@@ -254,6 +272,18 @@ def gen_client():
     }
     """)
 
+    mux_enable = json.loads("""
+    {
+            "enabled": true
+    }
+    """)
+
+    mux_disable = json.loads("""
+    {
+            "enabled": false
+    }
+    """)
+
     client = json.loads(client_raw)
     data_file = open("v2ray.config", "r")
     data = json.loads(data_file.read())
@@ -261,10 +291,15 @@ def gen_client():
 
     if data['mux'] == "on":
         client['outbound']['mux']['enabled'] = True
-    else:
+    elif data['mux'] == "off":
         client['outbound']['mux']['enabled'] = False
 
-    client['outbound']['settings']['vnext'][0]['address'] = data['ip']
+    if data['domain'] == "none":
+        client['outbound']['settings']['vnext'][0]['address'] = data['ip']
+    else:
+        client['outbound']['settings']['vnext'][0]['address'] = data['domain']
+
+
     client['outbound']['settings']['vnext'][0]['port'] = int(data['port'])
     client['outbound']['settings']['vnext'][0]['users'][0]['id'] = data['uuid']
     client['outbound']['settings']['vnext'][0]['users'][0]['security'] = data['encrypt']
@@ -285,6 +320,10 @@ def gen_client():
 
     elif data['trans'] == "tcp":
         client['outbound']['streamSettings']['network'] = "tcp"
+
+
+    if data['tls'] == "on":
+        client['outbound']['streamSettings']['security'] = "tls"
 
     client_file = open("/root/config.json","w")
     client_file.write(json.dumps(client,indent=2))

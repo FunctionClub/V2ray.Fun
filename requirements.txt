@@ -1,0 +1,8 @@
+Flask==0.12.2
+Flask-BasicAuth==0.2.0
+Jinja2==2.10
+pyOpenSSL==0.14
+requests==2.4.3
+six==1.8.0
+urllib3==1.9.1
+wheel==0.24.0
