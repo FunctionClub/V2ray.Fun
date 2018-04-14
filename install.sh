@@ -34,7 +34,7 @@ fi
 
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install screen wget jq curl git unzip python-pip python openssl ca-certificates -y
+	apt-get install screen wget curl socat git unzip python-pip python openssl ca-certificates -y
 fi
 
 #Install acme.sh
