@@ -167,6 +167,30 @@
                                         <form id="trans_form" action="##">
                                         </form>
                                     </div>
+
+                                    <div class="mdui-dialog" id="websocket-dialog">
+                                            <div class="mdui-dialog-title">WebSocket 域名设置</div>
+                                            <div class="mdui-dialog-content">
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
+                                                    <p><strong>* </strong> 请务必将您的域名先解析到本台服务器！</p>
+                                                </div>
+                                                <p></p>
+                                                <div class="mdui-row">
+                                                    <div class="mdui-col-md-2"></div>
+                                                    <div class="mdui-col-md-6">
+                                                            <input id="ws_input_domain" class="mdui-textfield-input" placeholder="请输入域名（无需http://）" value="" />
+                                                    </div>
+                                                </div>
+                                                <p></p>
+
+                                            </div>
+                                            <div class="mdui-dialog-actions">
+                                                <button class="mdui-btn mdui-ripple" mdui-dialog-close="" onclick="set_websocket()">确认</button>
+                                            </div>
+                                        </div>
+
+
                                     <div class="mdui-col-md-2"></div>
                                     <div class="mdui-col-md-1">
                                         <button onclick="change_trans()" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改传输</button>
@@ -360,9 +384,28 @@
         message("加密方式已修改")
     }
 
+    function set_websocket() {
+        let result = "trans=2&domain=" + document.getElementById('ws_input_domain').value;
+        $.get("/set_trans",result);
+        message("传输方式已修改");
+
+    }
+    
     function change_trans() {
-        $.get("/set_trans",$('#trans_form').serialize());
-        message("传输方式已修改")
+
+        let result = $('#trans_form').serialize();
+
+        if(result.indexOf("2")!==-1)
+        {
+            var inst = new mdui.Dialog('#websocket-dialog');
+            inst.open();
+        }
+        else
+        {
+            $.get("/set_trans",result);
+            message("传输方式已修改");
+        }
+
     }
 
     function change_TLS(action) {
