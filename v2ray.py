@@ -57,8 +57,8 @@ if __name__ == '__main__':
         open_port(data['port'])
         print("重启成功!")
     elif choice == "4":
-        new_username = str(input("请输入新的用户名："))
-        new_password = str(input("请输入心得密码："))
+        new_username = str(raw_input("请输入新的用户名："))
+        new_password = str(raw_input("请输入新的密码："))
         data['username'] = new_username
         data['password'] = new_password
         write(data)
