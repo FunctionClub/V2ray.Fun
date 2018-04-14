@@ -5,10 +5,10 @@ import os
 import commands
 
 def start():
-    os.system("screen -dmS Flask python /usr/local/V2ray.Fun/app.py")
+    os.system("screen -dm python /usr/local/V2ray.Fun/app.py")
 
 def stop():
-    pids = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep""")
+    pids = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep | awk '{print $2}'""")
     pids.split()
     for pid in pids:
         os.system("kill " + pid)
