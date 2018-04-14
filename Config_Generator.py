@@ -290,6 +290,10 @@ def gen_client():
     client_file.write(json.dumps(client,indent=2))
     client_file.close()
 
+    client_file = open("static/config.json", "w")
+    client_file.write(json.dumps(client, indent=2))
+    client_file.close()
+
 
 
 
