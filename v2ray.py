@@ -4,14 +4,22 @@ import json
 import os
 import commands
 
+def open_port(port):
+    cmd =[ "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+            "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
+            "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+            "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"]
+
+    for x in cmd:
+        x = x.replace("$1",str(port))
+        commands.getoutput(x)
+
 def start():
-    os.system("screen -dm python /usr/local/V2ray.Fun/app.py")
+    os.system("""screen -dmS Flask python /usr/local/V2ray.Fun/app.py""")
 
 def stop():
-    pids = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep | awk '{print $2}'""")
-    pids.split()
-    for pid in pids:
-        os.system("kill " + pid)
+    pid = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep | grep -v "SCREEN" | awk '{print $2}'""")
+    os.system("kill " + str(pid))
 
 def write(data):
     data_file = open("/usr/local/V2ray.Fun/panel.config", "w")
@@ -37,6 +45,7 @@ if __name__ == '__main__':
 
     if choice == "1":
         start()
+        open_port(data['port'])
         print("启动成功!")
         print(commands.getoutput("""ps -ef | grep "app.py" | grep -v grep"""))
 
@@ -47,6 +56,7 @@ if __name__ == '__main__':
     elif choice == "3":
         stop()
         start()
+        open_port(data['port'])
         print("重启成功!")
     elif choice == "4":
         new_username = input("请输入新的用户名：")
@@ -81,4 +91,5 @@ if __name__ == '__main__':
         write(data)
         stop()
         start()
+        open_port(data['port'])
         print("面板端口已修改！")
