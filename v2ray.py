@@ -18,8 +18,7 @@ def start():
     os.system("""cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py""")
 
 def stop():
-    pid = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep | grep -v "SCREEN" | awk '{print $2}'""")
-    os.system("kill " + str(pid))
+    os.system("kill " + """ps -ef | grep "app.py" | grep -v grep | grep -v "SCREEN" | awk '{print $2}'""")
 
 def write(data):
     data_file = open("/usr/local/V2ray.Fun/panel.config", "w")
