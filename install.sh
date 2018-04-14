@@ -55,10 +55,13 @@ cd /usr/local/V2ray.Fun/ && python init.py
 cp /usr/local/V2ray.Fun/v2ray.py /usr/local/bin/v2ray
 chmod +x /usr/local/bin/v2ray
 
+#Start All services
+cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py
+service v2ray start
+
 ip=$(curl http://members.3322.org/dyndns/getip)
 
 echo "安装成功！"
-screen -dmS Flask python /usr/local/V2ray.Fun/app.py
 
 echo "面板登录地址：http://${ip}:5000"
 echo "默认用户名：admin"
