@@ -58,8 +58,8 @@ if __name__ == '__main__':
         open_port(data['port'])
         print("重启成功!")
     elif choice == "4":
-        new_username = input("请输入新的用户名：")
-        new_password = input("请输入心得密码：")
+        new_username = str(input("请输入新的用户名："))
+        new_password = str(input("请输入心得密码："))
         data['username'] = new_username
         data['password'] = new_password
         write(data)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         print("提示：只有在面板开启 V2ray TLS 功能时，面板自身的SSL功能才会正常运行。\n")
         print("1. 打开面板 SSL 功能")
         print("2. 关闭面板 SSL 功能")
-        ssl_choice = input("请选择：")
+        ssl_choice = str(input("请选择："))
 
         if ssl_choice == "1":
             data['use_ssl'] = "on"
