@@ -187,6 +187,7 @@ def get_info():
     json_content['status'] = get_status()
     json_dump = json.dumps(json_content)
     v2ray_config.close()
+
     return json_dump
 
 @app.route('/get_log')
