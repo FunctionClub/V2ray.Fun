@@ -33,7 +33,7 @@ if __name__ == '__main__':
     print("4. 设置面板用户名和密码")
     print("5. 设置面板SSL")
     print("6. 设置面板端口")
-    choice = input("\n请选择：")
+    choice = str(input("\n请选择："))
 
     if choice == "1":
         start()
