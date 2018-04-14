@@ -51,7 +51,7 @@ git clone https://github.com/YLWS-4617/V2ray.Fun
 pip install -r /usr/local/V2ray.Fun/requirements.txt
 
 #Generate Default Configurations
-python /usr/local/V2ray.Fun/init.py
+cd /usr/local/V2ray.Fun/ && python init.py
 cp /usr/local/V2ray.Fun/v2ray.py /usr/local/bin/v2ray
 chmod +x /usr/local/bin/v2ray
 
