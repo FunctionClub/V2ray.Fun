@@ -46,7 +46,6 @@ if __name__ == '__main__':
         start()
         open_port(data['port'])
         print("启动成功!")
-        print(commands.getoutput("""ps -ef | grep "app.py" | grep -v grep"""))
 
     elif choice == "2":
         stop()
