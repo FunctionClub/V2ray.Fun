@@ -2,11 +2,24 @@
 # -*- coding: utf-8 -*-
 import json
 import urllib2
+import commands
+
 
 def getip():
     myip = urllib2.urlopen('http://members.3322.org/dyndns/getip').read()
     myip = myip.strip()
     return str(myip)
+
+
+def open_port(port):
+    cmd =[ "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+            "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
+            "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+            "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"]
+
+    for x in cmd:
+        x = x.replace("$1",str(port))
+        commands.getoutput(x)
 
 def gen_server():
 

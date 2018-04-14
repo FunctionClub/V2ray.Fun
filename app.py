@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask,render_template,request
-import commands
 import os
 from Config_Generator import *
 from flask_basicauth import BasicAuth
@@ -29,16 +28,6 @@ def change_config(config,value):
     config.write(string)
     config.close()
 
-
-def open_port(port):
-    cmd =[ "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"]
-
-    for x in cmd:
-        x = x.replace("$1",str(port))
-        commands.getoutput(x)
 
 
 
