@@ -15,7 +15,7 @@ def open_port(port):
         commands.getoutput(x)
 
 def start():
-    os.system("""screen -dmS Flask python /usr/local/V2ray.Fun/app.py""")
+    os.system("""cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py""")
 
 def stop():
     pid = commands.getoutput("""ps -ef | grep "app.py" | grep -v grep | grep -v "SCREEN" | awk '{print $2}'""")
