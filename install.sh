@@ -90,9 +90,9 @@ fi
 if [[ -z "${pw}" ]];then
 	pw="admin"
 fi
-sed -i "s/%%username%%/'${un}'/g" /usr/local/V2ray.Fun/panel.config
-sed -i "s/%%passwd%%/'${pw}'/g" /usr/local/V2ray.Fun/panel.config
-sed -i "s/%%port%%/'${uport}'/g" /usr/local/V2ray.Fun/panel.config
+sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
+sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
+sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
 
 echo "安装成功！"
 
