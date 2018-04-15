@@ -12,7 +12,7 @@
 
 **请务必使用新系统，纯净的VPS系统安装!!!**
 
-- Debian 8 (推荐)**
+- **Debian 8 (推荐)**
 - Debian 9
 - Ubuntu 14
 - Ubuntu 16
@@ -75,3 +75,4 @@ service v2ray start
 ```
 
 然后就装好了，访问 **http://你的IP:5000** 就可以使用Web面板了
+
