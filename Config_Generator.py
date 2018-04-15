@@ -38,7 +38,7 @@ def gen_server():
 
     server_mkcp = json.loads("""
     {
-        "uplinkCapacity": 100,
+        "uplinkCapacity": 20,
         "downlinkCapacity": 100,
         "readBufferSize": 2,
         "mtu": 1350,
@@ -75,7 +75,6 @@ def gen_server():
         "port": 39885,
         "protocol": "vmess",
         "settings": {
-            "udp": true,
             "clients": [
                 {
                     "id": "475161c6-837c-4318-a6bd-e7d414697de5",
@@ -183,7 +182,6 @@ def gen_client():
         "protocol": "socks",
         "settings": {
             "auth": "noauth",
-            "udp": true,
             "ip": "127.0.0.1"
         }
     },
@@ -274,7 +272,7 @@ def gen_client():
     {
                 "mtu": 1350,
                 "tti": 50,
-                "uplinkCapacity": 100,
+                "uplinkCapacity": 20,
                 "downlinkCapacity": 100,
                 "congestion": false,
                 "readBufferSize": 2,
