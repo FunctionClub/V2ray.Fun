@@ -62,6 +62,9 @@ pip install flask pyOpenSSL requests urllib3 -y
 初始化配置文件和执行文件
 
 ```bash
+sed -i "s/%%username%%/admin/g" /usr/local/V2ray.Fun/panel.config
+sed -i "s/%%passwd%%/admin/g" /usr/local/V2ray.Fun/panel.config
+sed -i "s/%%port%%/5000/g" /usr/local/V2ray.Fun/panel.config
 cd /usr/local/V2ray.Fun/ && python init.py
 cp /usr/local/V2ray.Fun/v2ray.py /usr/local/bin/v2ray
 chmod +x /usr/local/bin/v2ray
