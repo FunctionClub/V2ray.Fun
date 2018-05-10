@@ -56,7 +56,6 @@ cp /usr/local/V2ray.Fun/v2ray.py /usr/local/bin/v2ray
 chmod +x /usr/local/bin/v2ray
 
 #Start All services
-cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py
 service v2ray start
 
 ip=$(curl http://members.3322.org/dyndns/getip)
@@ -93,7 +92,7 @@ fi
 sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
-
+cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py
 echo "安装成功！"
 
 echo "面板登录地址：http://${ip}:${uport}"
