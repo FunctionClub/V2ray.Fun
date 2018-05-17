@@ -53,7 +53,7 @@ cd /usr/local/
 git clone https://github.com/YLWS-4617/V2ray.Fun
 
 #Install Needed Python Packages
-pip install flask pyOpenSSL requests urllib3 Flask-BasicAuth supervisor
+pip install flask requests urllib3 Flask-BasicAuth supervisor
 pip install pyOpenSSL
 
 #Generate Default Configurations
