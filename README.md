@@ -12,10 +12,14 @@
 
 **请务必使用新系统，纯净的VPS系统安装!!!**
 
-- **Debian 8 (推荐)**
-- Debian 9
+- Debian 8 
+- **Debian 9(推荐)**
 - Ubuntu 14
 - Ubuntu 16
+- CentOS 7
+
+## 不支持
+- CentOS 6
 
 ## 一键安装
 
