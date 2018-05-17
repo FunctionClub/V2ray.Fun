@@ -15,10 +15,10 @@ def open_port(port):
         commands.getoutput(x)
 
 def start():
-    os.system("""cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py""")
+    os.system("""supervisorctl start v2ray.fun""")
 
 def stop():
-    os.system("kill " + """$(ps -ef | grep "app.py" | grep -v grep | grep -v "SCREEN" | awk '{print $2}')""" + " >/dev/null  2>&1 &")
+    os.system("""supervisorctl stop v2ray.fun""")
 
 def write(data):
     data_file = open("/usr/local/V2ray.Fun/panel.config", "w")

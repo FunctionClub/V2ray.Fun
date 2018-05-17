@@ -34,7 +34,7 @@ fi
 
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install screen wget curl socat git unzip python-pip python openssl ca-certificates -y
+	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates -y
 fi
 
 #Install acme.sh
@@ -48,15 +48,39 @@ cd /usr/local/
 git clone https://github.com/YLWS-4617/V2ray.Fun
 
 #Install Needed Python Packages
-pip install flask pyOpenSSL requests urllib3 Flask-BasicAuth
+pip install flask pyOpenSSL requests urllib3 Flask-BasicAuth supervisor
 
 #Generate Default Configurations
 cd /usr/local/V2ray.Fun/ && python init.py
 cp /usr/local/V2ray.Fun/v2ray.py /usr/local/bin/v2ray
 chmod +x /usr/local/bin/v2ray
+chmod +x /usr/local/V2ray.Fun/start.sh
 
 #Start All services
 service v2ray start
+
+#Configure Supervisor
+mkdir /etc/supervisor
+mkdir /etc/supervisor/config.d
+echo_supervisord_conf > /etc/supervisor/supervisord.conf
+cat>>/etc/supervisor/supervisord.conf<<EOF
+[include]
+files = /etc/supervisor/config.d/*.ini
+EOF
+
+cat>>/etc/supervisor/config.d/v2ray.fun.ini<<EOF
+[program:v2ray.fun]
+command=/usr/local/V2ray.Fun/start.sh run
+stdout_logfile=/var/log/v2ray.fun
+autostart=true
+autorestart=true
+startsecs=5
+priority=1
+stopasgroup=true
+killasgroup=true
+EOF
+supervisord -c /etc/supervisor/supervisord.conf
+
 
 ip=$(curl http://members.3322.org/dyndns/getip)
 read -p "请输入默认用户名[默认admin]： " un
@@ -92,7 +116,9 @@ fi
 sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
-cd /usr/local/V2ray.Fun/ && screen -dmS Flask python app.py
+
+supervisorctl start v2ray.fun
+
 echo "安装成功！"
 
 echo "面板登录地址：http://${ip}:${uport}"
