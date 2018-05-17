@@ -50,7 +50,7 @@ bash <(curl -L -s https://install.direct/go.sh)
 
 #Install V2ray.Fun
 cd /usr/local/
-git clone https://github.com/YLWS-4617/V2ray.Fun
+git clone https://github.com/FunctionClub/V2ray.Fun
 
 #Install Needed Python Packages
 pip install --upgrade pip
