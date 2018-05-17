@@ -34,7 +34,7 @@ fi
 
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates -y
+	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates supervisor -y
 fi
 
 if [ ${OS} == CentOS ];then
