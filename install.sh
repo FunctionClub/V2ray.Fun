@@ -79,8 +79,6 @@ priority=1
 stopasgroup=true
 killasgroup=true
 EOF
-supervisord -c /etc/supervisor/supervisord.conf
-
 
 ip=$(curl http://members.3322.org/dyndns/getip)
 read -p "请输入默认用户名[默认admin]： " un
@@ -117,7 +115,7 @@ sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
 
-supervisorctl start v2ray.fun
+supervisord -c /etc/supervisor/supervisord.conf
 
 echo "安装成功！"
 
