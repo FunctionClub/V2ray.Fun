@@ -34,7 +34,7 @@ fi
 
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install wget curl socat git unzip python-pip python3-pip python3 python openssl ca-certificates -y
+	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates -y
 fi
 
 if [ ${OS} == CentOS ];then
@@ -53,6 +53,7 @@ cd /usr/local/
 git clone https://github.com/YLWS-4617/V2ray.Fun
 
 #Install Needed Python Packages
+pip install --upgrade pip
 pip install flask requests urllib3 Flask-BasicAuth supervisor
 pip install pyOpenSSL
 
