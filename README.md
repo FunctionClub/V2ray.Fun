@@ -56,7 +56,7 @@ git clone https://github.com/YLWS-4617/V2ray.Fun
 安装需要用的 Python 包
 
 ```bash
-pip install flask pyOpenSSL requests urllib3 -y
+pip install flask pyOpenSSL requests urllib3 Flask-BasicAuth -y
 ```
 
 初始化配置文件和执行文件
