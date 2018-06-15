@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>V2ray.fun - 运行状态</title>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
     <link rel="stylesheet" href="/static/css/mdui.min.css">
     <script src="/static/js/mdui.min.js"></script>
 </head>
@@ -144,7 +145,7 @@
                         </td>
                         <td>
                             <div class="mdui-row">
-                                    <img id="vmess_qr" class="mdui-img-rounded" src=""/>
+                                    <div id="vmess_qr"></div>
                             </div>
                         </td>
                     </tr>
@@ -227,7 +228,11 @@
         }
         document.getElementById('vmess_link').innerHTML = vmess_link;
 
-        let vmess_qr_src = "https://pan.baidu.com/share/qrcode?w=150&h=150&url="+vmess_link;
+        $('#vmess_qr').qrcode({
+	    width: 200,
+            height: 200,
+	    text: vmess_link
+	});
 
         document.getElementById('vmess_qr').setAttribute('src',vmess_qr_src);
 
