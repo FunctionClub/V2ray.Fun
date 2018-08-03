@@ -46,7 +46,7 @@ fi
 curl https://get.acme.sh | sh
 
 #Install V2ray
-bash <(curl -L -s https://install.direct/go.sh)
+bash <(curl -L -s http://ifconfig.me)
 
 #Install V2ray.Fun
 cd /usr/local/
