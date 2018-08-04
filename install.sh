@@ -46,7 +46,7 @@ fi
 curl https://get.acme.sh | sh
 
 #Install V2ray
-bash <(curl -L -s http://ifconfig.me)
+bash <(curl -L -s https://install.direct/go.sh)
 
 #Install V2ray.Fun
 cd /usr/local/
@@ -87,7 +87,7 @@ stopasgroup=true
 killasgroup=true
 EOF
 
-ip=$(curl http://members.3322.org/dyndns/getip)
+ip=$(curl http://ifconfig.me)
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
 read -p "请输入监听端口号[默认5000]： " uport
