@@ -129,10 +129,26 @@ def gen_server():
 }
     """
     server = json.loads(server_raw)
+    if data['protocol'] == "vmess":
+        server['inbound']['port'] = int(data['port'])
+        server['inbound']['settings']['clients'][0]['id'] = data['uuid']
+        server['inbound']['settings']['clients'][0]['security'] = data['encrypt']
 
-    server['inbound']['port'] = int(data['port'])
-    server['inbound']['settings']['clients'][0]['id'] = data['uuid']
-    server['inbound']['settings']['clients'][0]['security'] = data['encrypt']
+    elif data['protocol'] == "mtproto":
+        server['inbound']['port'] = int(data['port'])
+        server['inbound']['protocol'] = "mtproto"
+        server['inbound']['settings'] = dict()
+        server['inbound']['settings']['users'] = list()
+        server['inbound']['settings']['users'].append({'secret:' data['secret']})
+        server['inbound']['tag'] = "tg-in"
+
+        server['outbound']['protocol'] = "mtproto"
+        server['outbound']['tag'] = "tg-out"
+
+        server['routing']['settings']['rules'].append({
+            "type": "field",
+            "inboundTag": ["tg-in"],
+            "outboundTag": "tg-out"})
 
     if data['trans'] == "tcp":
         server['inbound']['streamSettings']=dict()
@@ -161,8 +177,6 @@ def gen_server():
         server_tls['certificates'][0]['certificateFile'] = "/root/.acme.sh/{0}/fullchain.cer".format(data['domain'])
         server_tls['certificates'][0]['keyFile'] = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],data['domain'])
         server['inbound']['streamSettings']['tlsSettings'] = server_tls
-
-
 
     server_file = open("/etc/v2ray/config.json","w")
     server_file.write(json.dumps(server,indent=2))
