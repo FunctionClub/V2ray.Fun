@@ -135,15 +135,17 @@ def gen_server():
         server['inbound']['settings']['clients'][0]['security'] = data['encrypt']
 
     elif data['protocol'] == "mtproto":
+        """ MTProto don't needs client config, just use Telegram"""
         server['inbound']['port'] = int(data['port'])
-        server['inbound']['protocol'] = "mtproto"
+        server['inbound']['protocol'] = "mtproto"   
         server['inbound']['settings'] = dict()
         server['inbound']['settings']['users'] = list()
-        server['inbound']['settings']['users'].append({'secret:' data['secret']})
+        server['inbound']['settings']['users'].append({'secret': data['secret']})
         server['inbound']['tag'] = "tg-in"
 
         server['outbound']['protocol'] = "mtproto"
         server['outbound']['tag'] = "tg-out"
+
 
         server['routing']['settings']['rules'].append({
             "type": "field",
@@ -324,10 +326,10 @@ def gen_client():
     else:
         client['outbound']['settings']['vnext'][0]['address'] = data['domain']
 
-
     client['outbound']['settings']['vnext'][0]['port'] = int(data['port'])
     client['outbound']['settings']['vnext'][0]['users'][0]['id'] = data['uuid']
     client['outbound']['settings']['vnext'][0]['users'][0]['security'] = data['encrypt']
+
 
     if data['trans'] == "websocket":
         client['outbound']['streamSettings']['network'] = "ws"
