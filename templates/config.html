@@ -328,7 +328,7 @@
         $("#protocol_form").append(protocol_form);
         document.getElementById(data['protocol']).setAttribute('selected','selected');
 
-        var encrypt_hrml ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
+        var encrypt_html ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
             '<option id="auto" value="1"> auto (自动选择)</option>\n' +
             '<option id="aes-128-cfb" value="2"> aes-128-cfb </option>\n' +
             '<option id="aes-128-gcm" value="3"> aes-128-gcm </option>\n' +
@@ -336,7 +336,7 @@
             '<option id="none" value="5"> none (不加密) </option>\n' +
             '</select>'
 
-        $("#encrypt_form").append(encrypt_hrml);
+        $("#encrypt_form").append(encrypt_html);
         document.getElementById(data['encrypt']).setAttribute('selected','selected');
 
         var trans_html = '<select name="trans" class="mdui-select" mdui-select>\n' +
