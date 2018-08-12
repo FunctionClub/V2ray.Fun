@@ -194,7 +194,7 @@
         else
         {
             document.getElementById('stop').removeAttribute('hidden');
-        
+        }
         document.getElementById('protocol').innerHTML = data['protocol']
         if (data['protocol'] === "vmess") {
             $('.vmess-info').removeAttr("style");
@@ -234,7 +234,7 @@
         document.getElementById('port').innerHTML = data["port"];
         
         document.getElementById('trans').innerHTML = data["trans"];
-        }
+        
         if(data["tls"] === "on")
         {
             document.getElementById('tls_on').removeAttribute('hidden');
