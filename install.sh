@@ -121,11 +121,13 @@ fi
 sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
-
+chmod 777 /etc/v2ray/config.json
 supervisord -c /etc/supervisor/supervisord.conf
+echo "supervisord -c /etc/supervisor/supervisord.conf">>/etc/rc.d/rc.local
+chmod +x /etc/rc.d/rc.local
 
-echo "安装成功！"
-
+echo "安装成功！
+"
 echo "面板登录地址：http://${ip}:${uport}"
 echo "默认用户名：${un}"
 echo "默认密码：${pw}"
