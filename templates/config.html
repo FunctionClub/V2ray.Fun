@@ -95,20 +95,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>UUID</td>
+                            <td>协议类型</td>
                             <td>
                                 <div class="mdui-row">
-                                    <div class="mdui-col-md-6">
-                                        <input id="uuid" class="mdui-textfield-input" type="text" readonly="readonly" value="b18d3377-e0bd-49c6-9194-892326c9bbb0" maxlength="10px"/>
+                                    <div class="mdui-col-md-4" style="margin: 3px">
+                                        <form id="protocol_form" action="##">
+                                        </form>
                                     </div>
-                                    <div class="mdui-col-md-1" onclick="change_uuid()">
-                                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" >
-                                            <i class="mdui-icon material-icons">autorenew</i>
-                                        </button>
+                                    <div class="mdui-col-md-2"></div>
+                                    <div class="mdui-col-md-1">
+                                        <button onclick="change_protocol()" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple" >修改协议</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+
                         <tr>
                             <td>主端口</td>
                             <td>
@@ -126,8 +127,37 @@
 
                             </td>
                         </tr>
-
-                        <tr>
+                        <tr class="mtproto-config">
+                            <td>用户秘钥</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-6">
+                                        <input id="secret" class="mdui-textfield-input" type="text" readonly="readonly" value="b0cbcef5a486d9636472ac27f8e11a9d"/>
+                                    </div>
+                                    <div class="mdui-col-md-1" onclick="change_secret()">
+                                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" >
+                                        <i class="mdui-icon material-icons">autorenew</i>
+                                    </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="vmess-config">
+                            <td>UUID</td>
+                            <td>
+                                <div class="mdui-row">
+                                    <div class="mdui-col-md-6">
+                                        <input id="uuid" class="mdui-textfield-input" type="text" readonly="readonly" value="b18d3377-e0bd-49c6-9194-892326c9bbb0" />
+                                    </div>
+                                    <div class="mdui-col-md-1" onclick="change_uuid()">
+                                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple" >
+                                            <i class="mdui-icon material-icons">autorenew</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="vmess-config">
                             <td>加密方式</td>
                             <td>
                                 <div class="mdui-row">
@@ -275,7 +305,6 @@
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -292,8 +321,20 @@
 
         document.getElementById('uuid').setAttribute('value',data["uuid"]);
         document.getElementById('port').setAttribute('value',data["port"]);
-
-        var encrypt_hrml ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
+        var protocol_form = '<select name="protocol" class="mdui-select" mdui-select>\n' +
+            '<option id="vmess" value="1"> VMess</option>\n' +
+            '<option id="mtproto" value="2"> MTProto </option>\n' +
+            '</select>'
+        $("#protocol_form").append(protocol_form);
+        document.getElementById(data['protocol']).setAttribute('selected','selected');
+        if (data['protocol'] === "vmess") {
+             $('.vmess-config').removeAttr("style");
+            $('.mtproto-config').css("display", "none");
+        } else if (data['protocol'] === "mtproto") {
+            $('.vmess-config').css("display", "none");
+            $('.mtproto-config').removeAttr("style");
+        }
+        var encrypt_html ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
             '<option id="auto" value="1"> auto (自动选择)</option>\n' +
             '<option id="aes-128-cfb" value="2"> aes-128-cfb </option>\n' +
             '<option id="aes-128-gcm" value="3"> aes-128-gcm </option>\n' +
@@ -301,7 +342,7 @@
             '<option id="none" value="5"> none (不加密) </option>\n' +
             '</select>'
 
-        $("#encrypt_form").append(encrypt_hrml);
+        $("#encrypt_form").append(encrypt_html);
         document.getElementById(data['encrypt']).setAttribute('selected','selected');
 
         var trans_html = '<select name="trans" class="mdui-select" mdui-select>\n' +
@@ -347,6 +388,27 @@
             }
         }
         return true;
+    }
+    function change_protocol() {
+        let protocol = $('#protocol_form').serialize()
+        if (protocol.indexOf("1") !== -1) {
+            $('.vmess-config').removeAttr("style");
+            $('.mtproto-config').css("display", "none");
+        } else if (protocol.indexOf("2") !== -1) {
+            $('.vmess-config').css("display", "none");
+            $('.mtproto-config').removeAttr("style");
+        }
+        $.get("/set_protocol",$('#protocol_form').serialize());
+        message("协议类型已修改,请配置完整后重启服务")
+    }
+
+    function change_secret(){
+        let new_secret = randHex();
+        $.get("/set_secret", {
+            "secret": new_secret
+        });
+        message("已生成新用户秘钥")
+        $("#secret").attr("value", new_secret);
     }
 
     function change_uuid() {
@@ -504,6 +566,16 @@
 
         var uuid = s.join("");
         return uuid;
+    }
+    function randHex() {
+        // openssl rand -hex 16 
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 32; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        var randHex = s.join("");
+        return randHex;
     }
 
 
