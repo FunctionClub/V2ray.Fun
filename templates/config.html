@@ -327,7 +327,13 @@
             '</select>'
         $("#protocol_form").append(protocol_form);
         document.getElementById(data['protocol']).setAttribute('selected','selected');
-
+        if (data['protocol'] === "vmess") {
+             $('.vmess-config').removeAttr("style");
+            $('.mtproto-config').css("display", "none");
+        } else if (data['protocol'] === "mtproto") {
+            $('.vmess-config').css("display", "none");
+            $('.mtproto-config').removeAttr("style");
+        }
         var encrypt_html ='<select name="encrypt" class="mdui-select" mdui-select>\n' +
             '<option id="auto" value="1"> auto (自动选择)</option>\n' +
             '<option id="aes-128-cfb" value="2"> aes-128-cfb </option>\n' +
