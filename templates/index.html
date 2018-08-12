@@ -84,6 +84,14 @@
                         <td id="ip"></td>
                     </tr>
                     <tr>
+                        <td>主端口</td>
+                        <td id="port"></td>
+                    </tr>
+                    <tr>
+                        <td>协议类型</td>
+                        <td id="protocol"></td>
+                    </tr>
+                    <tr class="vmess-info">
                         <td>UUID</td>
                         <td>
                             <div class="mdui-row">
@@ -94,14 +102,15 @@
 
                         </td>
                     </tr>
-                    <tr>
-                        <td>主端口</td>
-                        <td id="port"></td>
-                    </tr>
+  
 
-                    <tr>
+                    <tr class="vmess-info">
                         <td>加密方式</td>
                         <td id="encrypt"></td>
+                    </tr>
+                    <tr class="mtproto-info">
+                        <td>用户秘钥</td>
+                        <td id="secret"></td>
                     </tr>
                     <tr>
                         <td>传输方式</td>
@@ -136,7 +145,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="vmess-info">
                         <td>
                             <div class="mdui-row">
                                     <label class="mdui-textfield-label">Vmess：</label>
@@ -149,7 +158,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="vmess-info">
                         <td>
                             <div class="mdui-row">
                                 <button onclick="open_vmess()" class="mdui-btn mdui-btn-block mdui-color-theme-500 mdui-ripple">打开Vmess链接</button>
@@ -186,12 +195,46 @@
         {
             document.getElementById('stop').removeAttribute('hidden');
         }
-        document.getElementById('ip').innerHTML = data["ip"];
-        document.getElementById('uuid').value = data["uuid"];
-        document.getElementById('port').innerHTML = data["port"];
-        document.getElementById('encrypt').innerHTML = data["encrypt"];
-        document.getElementById('trans').innerHTML = data["trans"];
+        document.getElementById('protocol').innerHTML = data['protocol']
+        if (data['protocol'] === "vmess") {
+            $('.vmess-info').removeAttr("style");
+            $('.mtproto-info').css("display", "none");
+            document.getElementById('uuid').value = data["uuid"];
+            document.getElementById('encrypt').innerHTML = data["encrypt"];
+            var raw_vmess_link = data["encrypt"] + ":" + data["uuid"] + "@" + data["ip"] + ":" + data["port"];
 
+            var vmess_link = "vmess://" + btoa(raw_vmess_link) + "?network=";
+
+            if(data["trans"].startsWith("mkcp"))
+            {
+                vmess_link += "kcp";
+            }
+            else if(data["trans"].startsWith("websocket"))
+            {
+                vmess_link += "ws";
+            }
+            else if(data["trans"].startsWith("tcp"))
+            {
+                vmess_link += "tcp";
+            }
+            document.getElementById('vmess_link').innerHTML = vmess_link;
+
+            $('#vmess_qr').qrcode({
+                width: 200,
+                    height: 200,
+                text: vmess_link
+            });
+        } else if (data['protocol'] === "mtproto"){
+            $('.vmess-info').css("display", "none");
+            $('.mtproto-info').removeAttr("style");
+            document.getElementById('secret').innerHTML = data['secret']
+        }
+        document.getElementById('ip').innerHTML = data["ip"];
+       
+        document.getElementById('port').innerHTML = data["port"];
+        
+        document.getElementById('trans').innerHTML = data["trans"];
+        
         if(data["tls"] === "on")
         {
             document.getElementById('tls_on').removeAttribute('hidden');
@@ -210,31 +253,7 @@
             document.getElementById('mux_off').removeAttribute('hidden');
         }
 
-        var raw_vmess_link = data["encrypt"] + ":" + data["uuid"] + "@" + data["ip"] + ":" + data["port"];
-
-        var vmess_link = "vmess://" + btoa(raw_vmess_link) + "?network=";
-
-        if(data["trans"].startsWith("mkcp"))
-        {
-            vmess_link += "kcp";
-        }
-        else if(data["trans"].startsWith("websocket"))
-        {
-            vmess_link += "ws";
-        }
-        else if(data["trans"].startsWith("tcp"))
-        {
-            vmess_link += "tcp";
-        }
-        document.getElementById('vmess_link').innerHTML = vmess_link;
-
-        $('#vmess_qr').qrcode({
-	    width: 200,
-            height: 200,
-	    text: vmess_link
-	});
-
-        document.getElementById('vmess_qr').setAttribute('src',vmess_qr_src);
+        
 
     });
 

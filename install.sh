@@ -39,14 +39,14 @@ fi
 
 if [ ${OS} == CentOS ];then
 	yum install epel-release -y
-	yum install python-pip socat ca-certificates openssl unzip git curl wget -y
+	yum install python-pip socat ca-certificates openssl unzip git curl crontabs wget -y
 fi
 
 #Install acme.sh
 curl https://get.acme.sh | sh
 
 #Install V2ray
-bash <(curl -L -s https://install.direct/go.sh)
+curl -L -s https://install.direct/go.sh | sh
 
 #Install V2ray.Fun
 cd /usr/local/
