@@ -10,8 +10,9 @@ about: Feedback system
   - [ ] Bug report
   - [ ] Feature request
   - [ ] Others
- 
-**List** 
+  
+----
+List
 ----
 <!--If your question type selects Feature Request, please do not fill in the content in the dividing line and delete them.-->
 - Operating system: 
@@ -26,11 +27,11 @@ about: Feedback system
 **To Reproduce**
 <!--Steps to reproduce the behavior:-->
  
-Log
----
+Error message
+-----
 ```
 <FULL LOG>
 ```
 ----
 **Other problems**
- 
+<!--Please fill in the question supplement or new function suggestion here.-->
