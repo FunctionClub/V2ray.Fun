@@ -21,7 +21,7 @@ List
 - Script version (or commit ref): 
  
 **Issue description: **
-<<!--A clear and concise description of what the issue is.-->
+<!--A clear and concise description of what the issue is.-->
  
 **To Reproduce**
 Steps to reproduce the behavior:
@@ -31,3 +31,5 @@ Log
 ```
 <FULL LOG>
 ```
+----
+Other problems: 
