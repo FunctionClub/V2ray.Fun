@@ -11,7 +11,7 @@ about: Feedback system
   - [ ] Feature request
   - [ ] Others
  
-List 
+**List** 
 ----
 <!--If your question type selects Feature Request, please do not fill in the content in the dividing line and delete them.-->
 - Operating system: 
