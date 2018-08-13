@@ -12,7 +12,7 @@ about: Feedback system
   - [ ] Others
  
 List 
-<!--If your question type selects Feature Request, please do not fill in the content in the dividing line.-->
+<!--If your question type selects Feature Request, please do not fill in the content in the dividing line and delete them.-->
 ----
 - Operating system: 
 - Kernel version: 
@@ -20,10 +20,11 @@ List
 - Bash version: 
 - Script version (or commit ref): 
  
-**Issue description: **
+**Issue description**
 <!--A clear and concise description of what the issue is.-->
  
 **To Reproduce**
+ 
 Steps to reproduce the behavior:
  
 Log
