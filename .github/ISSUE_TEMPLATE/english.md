@@ -24,8 +24,7 @@ List
 <!--A clear and concise description of what the issue is.-->
  
 **To Reproduce**
- 
-Steps to reproduce the behavior:
+<!--Steps to reproduce the behavior:-->
  
 Log
 ---
@@ -33,4 +32,5 @@ Log
 <FULL LOG>
 ```
 ----
-Other problems: 
+**Other problems**
+ 
