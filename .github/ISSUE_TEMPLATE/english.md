@@ -12,8 +12,8 @@ about: Feedback system
   - [ ] Others
  
 List 
-<!--If your question type selects Feature Request, please do not fill in the content in the dividing line and delete them.-->
 ----
+<!--If your question type selects Feature Request, please do not fill in the content in the dividing line and delete them.-->
 - Operating system: 
 - Kernel version: 
 - Python version: 
