@@ -34,12 +34,12 @@ fi
 
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates supervisor -y
+	apt-get install wget curl socat git unzip python-pip python python-dev openssl ca-certificates supervisor -y
 fi
 
 if [ ${OS} == CentOS ];then
 	yum install epel-release -y
-	yum install python-pip socat ca-certificates openssl unzip git curl crontabs wget -y
+	yum install python-pip python-devel socat ca-certificates openssl unzip git curl crontabs wget -y
 fi
 
 #Install acme.sh
