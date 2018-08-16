@@ -37,7 +37,7 @@ curl -L -s https://install.direct/go.sh | bash
 
 #Install V2ray.Fun
 cd /usr/local/
-git clone https://github.com/FunctionClub/V2ray.Fun
+git clone https://github.com/mingxin0130/V2ray.Fun
 
 #Install Needed Python Packages
 wget -O - "https://bootstrap.pypa.io/get-pip.py" | python
@@ -71,7 +71,7 @@ stopasgroup=true
 killasgroup=true
 EOF
 
-read -p "请输入本机ip： " ip
+ip=$(curl http://ifconfig.me)
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
 read -p "请输入监听端口号[默认5000]： " uport
