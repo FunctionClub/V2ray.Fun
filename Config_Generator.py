@@ -13,7 +13,6 @@ def getip():
         myip = s.getsockname()[0]
     finally:
         s.close()
- 
     return myip
 
 
