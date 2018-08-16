@@ -56,10 +56,10 @@ service v2ray start
 echo_supervisord_conf > /etc/supervisor/supervisord.conf
 cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
-files = /etc/supervisor/config.d/*.ini
+files = /etc/supervisor/conf.d/*.ini
 EOF
-touch /etc/supervisor/config.d/v2ray.fun.ini
-cat>>/etc/supervisor/config.d/v2ray.fun.ini<<EOF
+touch /etc/supervisor/conf.d/v2ray.fun.ini
+cat>>/etc/supervisor/conf.d/v2ray.fun.ini<<EOF
 [program:v2ray.fun]
 command=/usr/local/V2ray.Fun/start.sh run
 stdout_logfile=/var/log/v2ray.fun
