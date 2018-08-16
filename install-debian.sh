@@ -120,4 +120,4 @@ echo "输入 v2ray 并回车可以手动管理网页面板相关功能"
 
 #清理垃圾文件
 rm -rf /root/config.json
-rm -rf /root/install.sh
+rm -rf /root/install-debian.sh
