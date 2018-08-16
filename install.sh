@@ -58,7 +58,7 @@ cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
 files = /etc/supervisor/config.d/*.ini
 EOF
-
+touch /etc/supervisor/config.d/v2ray.fun.ini
 cat>>/etc/supervisor/config.d/v2ray.fun.ini<<EOF
 [program:v2ray.fun]
 command=/usr/local/V2ray.Fun/start.sh run
