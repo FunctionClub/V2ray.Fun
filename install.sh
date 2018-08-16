@@ -71,7 +71,7 @@ stopasgroup=true
 killasgroup=true
 EOF
 
-read -p "请输入服务器ip： " ip
+
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
 read -p "请输入监听端口号[默认5000]： " uport
@@ -112,7 +112,7 @@ chmod +x /etc/rc.local
 
 echo "安装成功！
 "
-echo "面板登录地址：http://${ip}:${uport}"
+echo "面板端口：${uport}"
 echo "默认用户名：${un}"
 echo "默认密码：${pw}"
 echo ''
