@@ -3,12 +3,18 @@
 import json
 import urllib2
 import commands
-
+import socket
 
 def getip():
-    myip = urllib2.urlopen('http://ipconfig.me').read()
-    myip = myip.strip()
-    return str(myip)
+    
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+ 
+    return myip
 
 
 def open_port(port):
