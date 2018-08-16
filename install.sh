@@ -61,7 +61,7 @@ EOF
 touch /etc/supervisor/conf.d/v2ray.fun.ini
 cat>>/etc/supervisor/conf.d/v2ray.fun.ini<<EOF
 [program:v2ray.fun]
-command=cd /usr/local/V2ray.Fun && bash start.sh run
+command=/usr/local/V2ray.Fun/start.sh run
 stdout_logfile=/var/log/v2ray.fun
 autostart=true
 autorestart=true
