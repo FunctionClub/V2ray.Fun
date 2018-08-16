@@ -117,3 +117,7 @@ echo "默认用户名：${un}"
 echo "默认密码：${pw}"
 echo ''
 echo "输入 v2ray 并回车可以手动管理网页面板相关功能"
+
+#清理垃圾文件
+rm -rf /root/config.json
+rm -rf /root/install.sh
