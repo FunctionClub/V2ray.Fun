@@ -71,7 +71,7 @@ stopasgroup=true
 killasgroup=true
 EOF
 
-ip=$(curl http://ifconfig.me)
+read -p "请输入服务器ip： " ip
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
 read -p "请输入监听端口号[默认5000]： " uport
