@@ -6,7 +6,15 @@ export PATH
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
 
 #Check OS
-if [ -n "$(grep bian /etc/issue)" -o "$(lsb_release -is 2>/dev/null)" == 'Debian' ]; then
+if [ -n "$(grep 'Aliyun Linux release' /etc/issue)" -o -e /etc/redhat-release ]; then
+  OS=CentOS
+  [ -n "$(grep ' 7\.' /etc/redhat-release)" ] && CentOS_RHEL_version=7
+  [ -n "$(grep ' 6\.' /etc/redhat-release)" -o -n "$(grep 'Aliyun Linux release6 15' /etc/issue)" ] && CentOS_RHEL_version=6
+  [ -n "$(grep ' 5\.' /etc/redhat-release)" -o -n "$(grep 'Aliyun Linux release5' /etc/issue)" ] && CentOS_RHEL_version=5
+elif [ -n "$(grep 'Amazon Linux AMI release' /etc/issue)" -o -e /etc/system-release ]; then
+  OS=CentOS
+  CentOS_RHEL_version=6
+elif [ -n "$(grep bian /etc/issue)" -o "$(lsb_release -is 2>/dev/null)" == 'Debian' ]; then
   OS=Debian
   [ ! -e "$(which lsb_release)" ] && { apt-get -y update; apt-get -y install lsb-release; clear; }
   Debian_version=$(lsb_release -sr | awk -F. '{print $1}')
@@ -24,10 +32,26 @@ else
   kill -9 $$
 fi
 
+#Install Needed Packages
+
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
 	apt-get install wget curl socat git unzip python python-dev openssl libssl-dev ca-certificates supervisor -y
 	wget -O - "https://bootstrap.pypa.io/get-pip.py" | python
+fi
+
+if [ ${OS} == CentOS ];then
+	yum install epel-release -y
+	yum install python-pip python-devel socat ca-certificates openssl unzip git curl crontabs wget -y
+	pip install --upgrade pip
+	pip install flask requests urllib3 Flask-BasicAuth supervisor Jinja2 requests six wheel
+	pip install pyOpenSSL
+fi
+
+if [ ${Debian_version} == 9 ];then
+	wget -N --no-check-certificate https://raw.githubusercontent.com/mingxin0130/V2ray.Fun/master/enable-debian9-rclocal.sh
+	bash enable-debian9-rclocal.sh
+	rm enable-debian9-rclocal.sh
 fi
 
 #Install acme.sh
@@ -40,8 +64,6 @@ curl -L -s https://install.direct/go.sh | bash
 cd /usr/local/
 git clone https://github.com/mingxin0130/V2ray.Fun
 
-#Install Needed Python Packages
-pip install Flask Flask-BasicAuth Jinja2 pyOpenSSL requests six urllib3 wheel
 
 #Generate Default Configurations
 cd /usr/local/V2ray.Fun/ && python init.py
@@ -53,6 +75,8 @@ chmod +x /usr/local/V2ray.Fun/start.sh
 service v2ray start
 
 #Configure Supervisor
+mkdir /etc/supervisor
+mkdir /etc/supervisor/conf.d
 echo_supervisord_conf > /etc/supervisor/supervisord.conf
 cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
