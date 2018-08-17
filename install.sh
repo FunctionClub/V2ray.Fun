@@ -49,7 +49,7 @@ if [ ${OS} == CentOS ];then
 fi
 
 if [ ${Debian_version} == 9 ];then
-	wget -N --no-check-certificate https://raw.githubusercontent.com/mingxin0130/V2ray.Fun/master/enable-debian9-rclocal.sh
+	wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/enable-debian9-rclocal.sh
 	bash enable-debian9-rclocal.sh
 	rm enable-debian9-rclocal.sh
 fi
