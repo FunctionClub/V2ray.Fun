@@ -25,5 +25,5 @@
 
 目前处于测试阶段，不保证一键脚本能安装成功
 
-> wget -N --no-check-certificate https://raw.githubusercontent.com/mingxin0130/V2ray.Fun/master/install-debian.sh && bash install-debian.sh
+> wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh
 
