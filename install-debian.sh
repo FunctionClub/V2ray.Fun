@@ -27,6 +27,7 @@ fi
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
 	apt-get install wget curl socat git unzip python python-dev openssl libssl-dev ca-certificates supervisor -y
+	wget -O - "https://bootstrap.pypa.io/get-pip.py" | python
 fi
 
 #Install acme.sh
@@ -40,7 +41,6 @@ cd /usr/local/
 git clone https://github.com/mingxin0130/V2ray.Fun
 
 #Install Needed Python Packages
-wget -O - "https://bootstrap.pypa.io/get-pip.py" | python
 pip install Flask Flask-BasicAuth Jinja2 pyOpenSSL requests six urllib3 wheel
 
 #Generate Default Configurations
