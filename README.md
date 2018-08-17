@@ -1,5 +1,5 @@
 # V2ray.Fun
-## 仅在Debian系列测试
+## 推荐使用Debian系列系统
 ### 一键安装
-> wget -N --no-check-certificate https://raw.githubusercontent.com/mingxin0130/V2ray.Fun/master/install-debian.sh && bash install-debian.sh
+> wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh
 
