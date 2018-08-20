@@ -32,30 +32,38 @@ else
   kill -9 $$
 fi
 
+#Install Needed Packages
+
 if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ];then
 	apt-get update -y
-	apt-get install wget curl socat git unzip python-pip python openssl ca-certificates supervisor -y
+	apt-get install wget curl socat git unzip python python-dev openssl libssl-dev ca-certificates supervisor -y
+	wget -O - "https://bootstrap.pypa.io/get-pip.py" | python
 fi
 
 if [ ${OS} == CentOS ];then
 	yum install epel-release -y
-	yum install python-pip socat ca-certificates openssl unzip git curl crontabs wget -y
+	yum install python-pip python-devel socat ca-certificates openssl unzip git curl crontabs wget -y
+	pip install --upgrade pip
+	pip install flask requests urllib3 Flask-BasicAuth supervisor Jinja2 requests six wheel
+	pip install pyOpenSSL
+fi
+
+if [ ${Debian_version} == 9 ];then
+	wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/enable-debian9-rclocal.sh
+	bash enable-debian9-rclocal.sh
+	rm enable-debian9-rclocal.sh
 fi
 
 #Install acme.sh
 curl https://get.acme.sh | sh
 
 #Install V2ray
-curl -L -s https://install.direct/go.sh | sh
+curl -L -s https://install.direct/go.sh | bash
 
 #Install V2ray.Fun
 cd /usr/local/
-git clone https://github.com/FunctionClub/V2ray.Fun
+git clone https://github.com/mingxin0130/V2ray.Fun
 
-#Install Needed Python Packages
-pip install --upgrade pip
-pip install flask requests urllib3 Flask-BasicAuth supervisor
-pip install pyOpenSSL
 
 #Generate Default Configurations
 cd /usr/local/V2ray.Fun/ && python init.py
@@ -68,14 +76,14 @@ service v2ray start
 
 #Configure Supervisor
 mkdir /etc/supervisor
-mkdir /etc/supervisor/config.d
+mkdir /etc/supervisor/conf.d
 echo_supervisord_conf > /etc/supervisor/supervisord.conf
 cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
-files = /etc/supervisor/config.d/*.ini
+files = /etc/supervisor/conf.d/*.ini
 EOF
-
-cat>>/etc/supervisor/config.d/v2ray.fun.ini<<EOF
+touch /etc/supervisor/conf.d/v2ray.fun.ini
+cat>>/etc/supervisor/conf.d/v2ray.fun.ini<<EOF
 [program:v2ray.fun]
 command=/usr/local/V2ray.Fun/start.sh run
 stdout_logfile=/var/log/v2ray.fun
@@ -87,7 +95,7 @@ stopasgroup=true
 killasgroup=true
 EOF
 
-ip=$(curl http://ifconfig.me)
+
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
 read -p "请输入监听端口号[默认5000]： " uport
@@ -121,12 +129,14 @@ fi
 sed -i "s/%%username%%/${un}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%passwd%%/${pw}/g" /usr/local/V2ray.Fun/panel.config
 sed -i "s/%%port%%/${uport}/g" /usr/local/V2ray.Fun/panel.config
-
+chmod 777 /etc/v2ray/config.json
 supervisord -c /etc/supervisor/supervisord.conf
+echo "supervisord -c /etc/supervisor/supervisord.conf">>/etc/rc.local
+chmod +x /etc/rc.local
 
-echo "安装成功！"
-
-echo "面板登录地址：http://${ip}:${uport}"
+echo "安装成功！
+"
+echo "面板端口：${uport}"
 echo "默认用户名：${un}"
 echo "默认密码：${pw}"
 echo ''
@@ -134,4 +144,4 @@ echo "输入 v2ray 并回车可以手动管理网页面板相关功能"
 
 #清理垃圾文件
 rm -rf /root/config.json
-rm -rf /root/install.sh
+rm -rf /root/install-debian.sh

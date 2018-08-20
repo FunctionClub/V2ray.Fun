@@ -3,12 +3,17 @@
 import json
 import urllib2
 import commands
-
+import socket
 
 def getip():
-    myip = urllib2.urlopen('http://members.3322.org/dyndns/getip').read()
-    myip = myip.strip()
-    return str(myip)
+    
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        myip = s.getsockname()[0]
+    finally:
+        s.close()
+    return myip
 
 
 def open_port(port):
@@ -23,7 +28,7 @@ def open_port(port):
 
 def gen_server():
 
-    data_file = open("v2ray.config", "r")
+    data_file = open("/usr/local/V2ray.Fun/v2ray.config", "r")
     data = json.loads(data_file.read())
     data_file.close()
 
@@ -312,7 +317,7 @@ def gen_client():
     """)
 
     client = json.loads(client_raw)
-    data_file = open("v2ray.config", "r")
+    data_file = open("/usr/local/V2ray.Fun/v2ray.config", "r")
     data = json.loads(data_file.read())
     data_file.close()
 
@@ -356,7 +361,7 @@ def gen_client():
     client_file.write(json.dumps(client,indent=2))
     client_file.close()
 
-    client_file = open("static/config.json", "w")
+    client_file = open("/usr/local/V2ray.Fun/static/config.json", "w")
     client_file.write(json.dumps(client, indent=2))
     client_file.close()
 
