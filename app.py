@@ -202,8 +202,8 @@ def get_info():
 
     return json_dump
 
-@app.route('/get_log')
-def get_log():
+@app.route('/get_access_log')
+def get_access_log():
     file = open('/var/log/v2ray/access.log',"r")
     content = file.read().split("\n")
     min_length = min(20,len(content))
@@ -212,6 +212,18 @@ def get_log():
     for i in range(min_length):
         string = string + content[i] + "<br>"
     return string
+
+@app.route('/get_error_log')
+def get_error_log():
+    file = open('/var/log/v2ray/error.log',"r")
+    content = file.read().split("\n")
+    min_length = min(20,len(content))
+    content = content[-min_length:]
+    string = ""
+    for i in range(min_length):
+        string = string + content[i] + "<br>"
+    return string
+
 
 
 @app.route('/gen_ssl',methods=['GET', 'POST'])
