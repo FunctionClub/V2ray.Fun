@@ -1,6 +1,4 @@
-# V2ray.Fun
-
-<center>![logo.png](logo.png)</center>
+![logo.png](logo.png)
 
 ## 简介
 
