@@ -1,5 +1,7 @@
 # V2ray.Fun
 
+<center>![logo.png](logo.png)</center>
+
 ## 简介
 
 一个基于 Web 的 V2ray 控制面板
