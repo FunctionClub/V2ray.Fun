@@ -5,7 +5,7 @@ import urllib2
 import commands
 
 def getip():
-    myip = urllib2.urlopen('http://ipconfig.me').read()
+    myip = urllib2.urlopen('http://ifconfig.me').read()
     myip = myip.strip()
     return str(myip)
 
