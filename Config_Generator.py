@@ -5,7 +5,7 @@ import urllib2
 import commands
 
 def getip():
-    myip = urllib2.urlopen('http://members.3322.org/dyndns/getip').read()
+    myip = urllib2.urlopen('https://jp.fdos.me/ip/').read()
     myip = myip.strip()
     return str(myip)
 
