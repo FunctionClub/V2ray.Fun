@@ -1,4 +1,4 @@
-Flask==0.12.2
+Flask==1.0.2
 Flask-BasicAuth==0.2.0
 Jinja2==2.10
 pyOpenSSL==18.0.0
