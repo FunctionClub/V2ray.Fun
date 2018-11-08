@@ -5,7 +5,7 @@ import urllib2
 import commands
 
 def getip():
-    myip = urllib2.urlopen('https://jp.fdos.me/ip/').read()
+    myip = urllib2.urlopen('https://cn.fdos.me/ip.php').read()
     myip = myip.strip()
     return str(myip)
 
