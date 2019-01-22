@@ -27,7 +27,7 @@ def gen_server():
 
     server_websocket = json.loads("""
     {
-  "path": "",
+  "path": "/apiTest",
   "headers": {
     "Host": ""
   }
@@ -65,84 +65,134 @@ def gen_server():
     server_raw = """
 {
     "log": {
-        "access": "/var/log/v2ray/access.log",
-        "error": "/var/log/v2ray/error.log",
-        "loglevel": "info"
+      "access": "/var/log/v2ray/access.log",
+      "loglevel": "warning",
+      "error": "/var/log/v2ray/error.log"
     },
-    "inbound": {
-        "port": 39885,
-        "protocol": "vmess",
-        "settings": {
-            "clients": [
-                {
-                    "id": "475161c6-837c-4318-a6bd-e7d414697de5",
-                    "level": 1,
-                    "alterId": 100
-                }
-            ]
-        },
-        "streamSettings": {
-            "network": "ws"
-        }
-    },
-    "outbound": {
-        "protocol": "freedom",
-        "settings": {}
-    },
-    "outboundDetour": [
-        {
-            "protocol": "blackhole",
-            "settings": {},
-            "tag": "blocked"
-        }
+    "stats": {},
+    "outbounds": [
+      {
+        "settings": {},
+        "protocol": "freedom"
+      },
+      {
+        "settings": {},
+        "protocol": "blackhole",
+        "tag": "blocked"
+      }
     ],
+    "api": {
+      "services": [
+        "StatsService"
+      ],
+      "tag": "api"
+    },
+    "policy": {
+      "system": {
+        "statsInboundUplink": true,
+        "statsInboundDownlink": true
+      },
+      "levels": {
+        "0": {
+          "statsUserDownlink": true,
+          "statsUserUplink": true
+        },
+        "1": {
+            "statsUserDownlink": true,
+            "statsUserUplink": true
+        }
+      }
+    },
     "routing": {
         "strategy": "rules",
-        "settings": {
-            "rules": [
-                {
-                    "type": "field",
-                    "ip": [
-                        "0.0.0.0/8",
-                        "10.0.0.0/8",
-                        "100.64.0.0/10",
-                        "127.0.0.0/8",
-                        "169.254.0.0/16",
-                        "172.16.0.0/12",
-                        "192.0.0.0/24",
-                        "192.0.2.0/24",
-                        "192.168.0.0/16",
-                        "198.18.0.0/15",
-                        "198.51.100.0/24",
-                        "203.0.113.0/24",
-                        "::1/128",
-                        "fc00::/7",
-                        "fe80::/10"
-                    ],
-                    "outboundTag": "blocked"
-                }
+        "rules": [
+            {
+            "outboundTag": "blocked",
+            "type": "field",
+            "ip": [
+                "0.0.0.0/8",
+                "10.0.0.0/8",
+                "100.64.0.0/10",
+                "169.254.0.0/16",
+                "172.16.0.0/12",
+                "192.0.0.0/24",
+                "192.0.2.0/24",
+                "192.168.0.0/16",
+                "198.18.0.0/15",
+                "198.51.100.0/24",
+                "203.0.113.0/24",
+                "::1/128",
+                "fc00::/7",
+                "fe80::/10"
             ]
+            },
+            {
+            "outboundTag": "api",
+            "type": "field",
+            "inboundTag": [
+                "api"
+            ]
+            }
+        ]
+    },
+    "inbounds": [
+      {
+        "settings": {
+          "clients": [
+            {
+                "id": "bc861c84-05b5-45f9-bb78-ff4c15b6fb77",
+                "email": "a@mail",
+                "level": 0,
+                "alterId": 39
+            }
+          ]
+        },
+        "tag": "main",
+        "protocol": "vmess",
+        "port": 8079,
+        "listen": "127.0.0.1",
+        "streamSettings": {
+          "tcpSettings": {},
+          "kcpSettings": {
+          },
+          "quicSettings": {},
+          "httpSettings": {},
+          "security": "auto",
+          "network": "ws",
+          "wsSettings": {}
+          },
+          "tlsSettings": {}
         }
-    }
-}
+      },
+      {
+        "settings": {
+          "address": "127.0.0.1"
+        },
+        "protocol": "dokodemo-door",
+        "tag": "api",
+        "listen": "127.0.0.1",
+        "port": 62105
+      }
+    ]
+  }
     """
     server = json.loads(server_raw)
     if data['protocol'] == "vmess":
-        server['inbound']['port'] = int(data['port'])
-        server['inbound']['settings']['clients'][0]['id'] = data['uuid']
-        server['inbound']['settings']['clients'][0]['security'] = data['encrypt']
+        server['inbounds'][0]['port'] = int(data['port'])
+        server['inbounds'][0]['settings']['clients'][0]['id'] = data['uuid']
+        server['inbounds'][0]['settings']['clients'][0]['security'] = data['encrypt']
 
     elif data['protocol'] == "mtproto":
         """ MTProto don't needs client config, just use Telegram"""
-        server['inbound']['port'] = int(data['port'])
-        server['inbound']['protocol'] = "mtproto"   
-        server['inbound']['settings'] = dict()
-        server['inbound']['settings']['users'] = list()
-        server['inbound']['settings']['users'].append({'secret': data['secret']})
-        server['inbound']['tag'] = "tg-in"
+        server['inbounds'][0]['port'] = int(data['port'])
+        server['inbounds'][0]['protocol'] = "mtproto"   
+        server['inbounds'][0]['settings'] = dict()
+        server['inbounds'][0]['settings']['users'] = list()
+        server['inbounds'][0]['settings']['users'].append({'secret': data['secret']})
+        server['inbounds'][0]['tag'] = "tg-in"
 
-        server['outbound']['protocol'] = "mtproto"
-        server['outbound']['tag'] = "tg-out"
+        server['inbounds'][0]['protocol'] = "mtproto"
+        server['inbounds'][0]['tag'] = "tg-out"
 
 
         server['routing']['settings']['rules'].append({
@@ -151,32 +201,32 @@ def gen_server():
             "outboundTag": "tg-out"})
 
     if data['trans'] == "tcp":
-        server['inbound']['streamSettings']=dict()
-        server['inbound']['streamSettings']['network'] = "tcp"
+        server['inbounds'][0]['streamSettings']=dict()
+        server['inbounds'][0]['streamSettings']['network'] = "tcp"
 
     elif data['trans'].startswith("mkcp"):
-        server['inbound']['streamSettings'] = dict()
-        server['inbound']['streamSettings']['network'] = "kcp"
-        server['inbound']['streamSettings']['kcpSettings'] = server_mkcp
+        server['inbounds'][0]['streamSettings'] = dict()
+        server['inbounds'][0]['streamSettings']['network'] = "kcp"
+        server['inbounds'][0]['streamSettings']['kcpSettings'] = server_mkcp
 
         if data['trans'] == "mkcp-srtp":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "srtp"
+            server['inbounds'][0]['streamSettings']['kcpSettings']['header']['type'] = "srtp"
         elif data['trans'] == "mkcp-utp":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "utp"
+            server['inbounds'][0]['streamSettings']['kcpSettings']['header']['type'] = "utp"
         elif data['trans'] == "mkcp-wechat":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "wechat-video"
+            server['inbounds'][0]['streamSettings']['kcpSettings']['header']['type'] = "wechat-video"
 
     elif data['trans'] == "websocket":
-        server['inbound']['streamSettings'] = dict()
-        server['inbound']['streamSettings']['network'] = "ws"
-        server['inbound']['streamSettings']['wsSettings'] = server_websocket
-        server['inbound']['streamSettings']['wsSettings']['headers']['Host'] = data['domain']
+        server['inbounds'][0]['streamSettings'] = dict()
+        server['inbounds'][0]['streamSettings']['network'] = "ws"
+        server['inbounds'][0]['streamSettings']['wsSettings'] = server_websocket
+        server['inbounds'][0]['streamSettings']['wsSettings']['headers']['Host'] = data['domain']
 
     if data['tls'] == "on":
-        server['inbound']['streamSettings']['security'] = "tls"
+        server['inbounds'][0]['streamSettings']['security'] = "tls"
         server_tls['certificates'][0]['certificateFile'] = "/root/.acme.sh/{0}/fullchain.cer".format(data['domain'])
         server_tls['certificates'][0]['keyFile'] = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],data['domain'])
-        server['inbound']['streamSettings']['tlsSettings'] = server_tls
+        server['inbounds'][0]['streamSettings']['tlsSettings'] = server_tls
 
     server_file = open("/etc/v2ray/config.json","w")
     server_file.write(json.dumps(server,indent=2))

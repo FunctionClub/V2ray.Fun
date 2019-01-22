@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask,render_template,request
 import os
+import re
 from Config_Generator import *
 from flask_basicauth import BasicAuth
 
@@ -9,7 +10,9 @@ panel_config_file = open("panel.config","r")
 panel_config = json.loads(panel_config_file.read())
 panel_config_file.close()
 
-
+downlink_value = 100
+uplink_value = 100
+test = ""
 app = Flask(__name__,static_url_path='/static')
 
 app.config['BASIC_AUTH_USERNAME'] = panel_config['username']
@@ -29,7 +32,31 @@ def change_config(config,value):
     config.close()
 
 
+def get_stats(is_reset=False):
+    global downlink_value
+    global uplink_value
+    global test
+    is_reset = "true" if is_reset else "false"
 
+    stats_cmd = "cd /usr/bin/v2ray && ./v2ctl api --server=127.0.0.1:%s StatsService.GetStats 'name: \"%s>>>%s>>>traffic>>>%s\" reset: %s'"
+
+    stats_real_cmd = stats_cmd % ("62105", "inbound", "main", "downlink", is_reset)
+    downlink_result = os.popen(stats_real_cmd).readlines()
+
+    if downlink_result and len(downlink_result) == 5:
+        re_result = re.findall(r"\d+", downlink_result[2])
+        if not re_result:
+            print("当前无流量数据，请使用流量片刻再来查看统计!")
+            return
+        downlink_value = int(re_result[0])
+        # test = re_result[0]
+
+    stats_real_cmd = stats_cmd % ("62105", "inbound", "main", "uplink", is_reset)
+    uplink_result = os.popen(stats_real_cmd).readlines()
+    if uplink_result and len(uplink_result) == 5:
+        re_result = re.findall(r"\d+", uplink_result[2])
+        uplink_value = int(re_result[0])
+        # test += re_result[0]
 
 def get_status():
     cmd = """ps -ef | grep "v2ray" | grep -v grep | awk '{print $2}'"""
@@ -120,12 +147,13 @@ def set_port():
     open_port(items['setport'])
     return "OK"
 
-@app.route('/set_encrypt',methods=['GET', 'POST'])
+
+@app.route('/set_encrypt', methods=['GET', 'POST'])
 def set_encrypt():
     items = request.args.to_dict()
     encrypt = str(items['encrypt'])
     if encrypt == "1":
-        change_config("encrypt","auto")
+        change_config("encrypt", "auto")
     elif encrypt == "2":
         change_config("encrypt", "aes-128-cfb")
     elif encrypt == "3":
@@ -141,12 +169,12 @@ def set_encrypt():
 
     return "OK"
 
-@app.route('/set_trans',methods=['GET', 'POST'])
+@app.route('/set_trans', methods=['GET', 'POST'])
 def set_trans():
     items = request.args.to_dict()
     trans = str(items['trans'])
     if trans == "1":
-        change_config("trans","tcp")
+        change_config("trans", "tcp")
         change_config("domain", "none")
     elif trans == "2":
         change_config("trans", "websocket")
@@ -161,11 +189,11 @@ def set_trans():
         change_config("trans", "mkcp-utp")
         change_config("domain", "none")
     else:
-        change_config("trans","mkcp-wechat")
+        change_config("trans", "mkcp-wechat")
         change_config("domain", "none")
 
     gen_server()
-    gen_client()
+    #gen_client()
     restart_service()
 
     return "OK"
@@ -176,30 +204,56 @@ def set_trans():
 def index_page():
     return render_template("index.html")
 
+
 @app.route('/app.html')
 def app_page():
     return render_template("app.html")
 
+
 @app.route('/log.html')
 def log_page():
     return render_template("log.html")
+
 
 @app.route('/config.html')
 def config_page():
     return render_template("config.html")
 
 
+# @app.route('/get_info')
+# def get_info():
+#     v2ray_config = open("v2ray.config","r")
+#     json_content = json.loads(v2ray_config.read())
+#     if(json_content['domain'] != "none"):
+#         json_content['ip'] = json_content['domain']
+
+#     json_content['status'] = get_status()
+#     json_dump = json.dumps(json_content)
+#     v2ray_config.close()
+
+#     return json_dump
 @app.route('/get_info')
 def get_info():
+    global downlink_value
+    global uplink_value
+    global test
+    get_stats()
     v2ray_config = open("v2ray.config","r")
-    json_content = json.loads(v2ray_config.read())
-    if(json_content['domain'] != "none"):
-        json_content['ip'] = json_content['domain']
-
-    json_content['status'] = get_status()
-    json_dump = json.dumps(json_content)
+    return_json = json.loads(v2ray_config.read())
     v2ray_config.close()
-
+    v2ray_config = open("/etc/v2ray/config.json","r")
+    json_content = json.loads(v2ray_config.read())
+    v2ray_config.close()
+    return_json['encrypt'] = "auto"
+    if (json_content['inbounds'][0]['streamSettings']['security'] != "none"):
+        return_json['encrypt'] = json_content['inbounds'][0]['streamSettings']['security']
+    return_json['uuid'] = json_content['inbounds'][0]['settings']['clients'][0]['id']
+    return_json['trans'] = json_content['inbounds'][0]['streamSettings']['network']
+    return_json['port'] = json_content['inbounds'][0]['port']
+    return_json['status'] = get_status()
+    return_json['u'] = uplink_value
+    return_json['d'] = downlink_value
+    json_dump = json.dumps(return_json)
     return json_dump
 
 @app.route('/get_access_log')
@@ -213,6 +267,7 @@ def get_access_log():
         string = string + content[i] + "<br>"
     return string
 
+
 @app.route('/get_error_log')
 def get_error_log():
     file = open('/var/log/v2ray/error.log',"r")
@@ -223,7 +278,6 @@ def get_error_log():
     for i in range(min_length):
         string = string + content[i] + "<br>"
     return string
-
 
 
 @app.route('/gen_ssl',methods=['GET', 'POST'])

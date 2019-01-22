@@ -145,6 +145,18 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            上传流量
+                        </td>
+                        <td id="uplink"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            下载流量
+                        </td>
+                        <td id="downlink"></td>
+                    </tr>
                     <tr class="vmess-info">
                         <td>
                             <div class="mdui-row">
@@ -234,6 +246,9 @@
         document.getElementById('port').innerHTML = data["port"];
         
         document.getElementById('trans').innerHTML = data["trans"];
+
+        document.getElementById('uplink').innerHTML = Math.floor(data["u"] / 1024 / 1024 * 100) / 100 +'MB';
+        document.getElementById('downlink').innerHTML = Math.floor(data["d"] / 1024 / 1024 * 100) / 100  +'MB';
         
         if(data["tls"] === "on")
         {
