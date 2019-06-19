@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+yapf = "*"
+
+[packages]
+requests = ">=2.20.0"
+six = "==1.8.0"
+urllib3 = "==1.9.1"
+Flask = "==1.0.2"
+Flask-BasicAuth = "==0.2.0"
+Jinja2 = "==2.10"
+pyOpenSSL = "==18.0.0"
+
+[requires]
+python_version = "3.7"

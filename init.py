@@ -1,21 +1,19 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
-import Config_Generator
+import config_generator
 import uuid
 
-data_file = open("/usr/local/V2ray.Fun/v2ray.config","r")
-data = json.loads(data_file.read())
-data_file.close()
+data = {}
+with open("/usr/local/V2ray.Fun/v2ray.config") as f:
+    data = json.load(f)
 
 data['uuid'] = str(uuid.uuid4())
-data['ip'] = Config_Generator.getip()
-Config_Generator.open_port(data['port'])
+data['ip'] = config_generator.getip()
+config_generator.open_port(data['port'])
 
+with open("/usr/local/V2ray.Fun/v2ray.config", "w") as f:
+    f.write(json.dump(data))
 
-data_file = open("/usr/local/V2ray.Fun/v2ray.config","w")
-data_file.write(json.dumps(data))
-data_file.close()
-
-Config_Generator.gen_server()
-Config_Generator.gen_client()
+config_generator.gen_server()
+config_generator.gen_client()

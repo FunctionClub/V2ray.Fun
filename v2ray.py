@@ -4,31 +4,37 @@ import json
 import os
 import commands
 
+
 def open_port(port):
-    cmd =[ "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"]
+    cmd = [
+        "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+        "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
+        "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+        "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"
+    ]
 
     for x in cmd:
-        x = x.replace("$1",str(port))
+        x = x.replace("$1", str(port))
         commands.getoutput(x)
+
 
 def start():
     os.system("""supervisorctl start v2ray.fun""")
 
+
 def stop():
     os.system("""supervisorctl stop v2ray.fun""")
 
+
 def write(data):
-    data_file = open("/usr/local/V2ray.Fun/panel.config", "w")
-    data_file.write(json.dumps(data,indent=2))
-    data_file.close()
+    with open("/usr/local/V2ray.Fun/panel.config", "w") as f:
+        json.dump(data, f, indent=2)
+
 
 if __name__ == '__main__':
-    data_file = open("/usr/local/V2ray.Fun/panel.config","r")
-    data = json.loads(data_file.read())
-    data_file.close()
+    with open("/usr/local/V2ray.Fun/panel.config") as f:
+        data = json.load(f)
+
     print("欢迎使用 V2ray.Fun 面板 ---- By 雨落无声\n")
     print("当前面板用户名：" + str(data['username']))
     print("当前面板密码：" + str(data['password']))
@@ -91,4 +97,3 @@ if __name__ == '__main__':
         start()
         open_port(data['port'])
         print("面板端口已修改！")
-        
