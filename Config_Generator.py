@@ -4,26 +4,29 @@ import json
 import urllib2
 import commands
 
+
 def getip():
     myip = urllib2.urlopen('https://cn.fdos.me/ip.php').read()
     myip = myip.strip()
     return str(myip)
 
+
 def open_port(port):
-    cmd =[ "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
-            "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"]
+    cmd = [
+        "iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+        "iptables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT",
+        "ip6tables -I INPUT -m state --state NEW -m tcp -p tcp --dport $1 -j ACCEPT",
+        "ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport $1 -j ACCEPT"
+    ]
 
     for x in cmd:
-        x = x.replace("$1",str(port))
+        x = x.replace("$1", str(port))
         commands.getoutput(x)
 
-def gen_server():
 
-    data_file = open("/usr/local/V2ray.Fun/v2ray.config", "r")
-    data = json.loads(data_file.read())
-    data_file.close()
+def gen_server():
+    with open("/usr/local/V2ray.Fun/v2ray.config") as f:
+        data = json.load(f)
 
     server_websocket = json.loads("""
     {
@@ -130,28 +133,30 @@ def gen_server():
     if data['protocol'] == "vmess":
         server['inbound']['port'] = int(data['port'])
         server['inbound']['settings']['clients'][0]['id'] = data['uuid']
-        server['inbound']['settings']['clients'][0]['security'] = data['encrypt']
+        server['inbound']['settings']['clients'][0]['security'] = data[
+            'encrypt']
 
     elif data['protocol'] == "mtproto":
         """ MTProto don't needs client config, just use Telegram"""
         server['inbound']['port'] = int(data['port'])
-        server['inbound']['protocol'] = "mtproto"   
+        server['inbound']['protocol'] = "mtproto"
         server['inbound']['settings'] = dict()
         server['inbound']['settings']['users'] = list()
-        server['inbound']['settings']['users'].append({'secret': data['secret']})
+        server['inbound']['settings']['users'].append(
+            {'secret': data['secret']})
         server['inbound']['tag'] = "tg-in"
 
         server['outbound']['protocol'] = "mtproto"
         server['outbound']['tag'] = "tg-out"
 
-
         server['routing']['settings']['rules'].append({
             "type": "field",
             "inboundTag": ["tg-in"],
-            "outboundTag": "tg-out"})
+            "outboundTag": "tg-out"
+        })
 
     if data['trans'] == "tcp":
-        server['inbound']['streamSettings']=dict()
+        server['inbound']['streamSettings'] = dict()
         server['inbound']['streamSettings']['network'] = "tcp"
 
     elif data['trans'].startswith("mkcp"):
@@ -160,27 +165,34 @@ def gen_server():
         server['inbound']['streamSettings']['kcpSettings'] = server_mkcp
 
         if data['trans'] == "mkcp-srtp":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "srtp"
+            server['inbound']['streamSettings']['kcpSettings']['header'][
+                'type'] = "srtp"
         elif data['trans'] == "mkcp-utp":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "utp"
+            server['inbound']['streamSettings']['kcpSettings']['header'][
+                'type'] = "utp"
         elif data['trans'] == "mkcp-wechat":
-            server['inbound']['streamSettings']['kcpSettings']['header']['type'] = "wechat-video"
+            server['inbound']['streamSettings']['kcpSettings']['header'][
+                'type'] = "wechat-video"
 
     elif data['trans'] == "websocket":
         server['inbound']['streamSettings'] = dict()
         server['inbound']['streamSettings']['network'] = "ws"
         server['inbound']['streamSettings']['wsSettings'] = server_websocket
-        server['inbound']['streamSettings']['wsSettings']['headers']['Host'] = data['domain']
+        server['inbound']['streamSettings']['wsSettings']['headers'][
+            'Host'] = data['domain']
 
     if data['tls'] == "on":
         server['inbound']['streamSettings']['security'] = "tls"
-        server_tls['certificates'][0]['certificateFile'] = "/root/.acme.sh/{0}/fullchain.cer".format(data['domain'])
-        server_tls['certificates'][0]['keyFile'] = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],data['domain'])
+        server_tls['certificates'][0][
+            'certificateFile'] = "/root/.acme.sh/{0}/fullchain.cer".format(
+                data['domain'])
+        server_tls['certificates'][0][
+            'keyFile'] = "/root/.acme.sh/{0}/{0}.key".format(
+                data['domain'], data['domain'])
         server['inbound']['streamSettings']['tlsSettings'] = server_tls
 
-    server_file = open("/etc/v2ray/config.json","w")
-    server_file.write(json.dumps(server,indent=2))
-    server_file.close()
+    with open("/etc/v2ray/config.json", "w") as f:
+        f.write(json.dumps(server, indent=2))
 
 
 def gen_client():
@@ -310,9 +322,8 @@ def gen_client():
     """)
 
     client = json.loads(client_raw)
-    data_file = open("/usr/local/V2ray.Fun/v2ray.config", "r")
-    data = json.loads(data_file.read())
-    data_file.close()
+    with open("/usr/local/V2ray.Fun/v2ray.config") as f:
+        data = json.load(f)
 
     if data['mux'] == "on":
         client['outbound']['mux']['enabled'] = True
@@ -326,8 +337,8 @@ def gen_client():
 
     client['outbound']['settings']['vnext'][0]['port'] = int(data['port'])
     client['outbound']['settings']['vnext'][0]['users'][0]['id'] = data['uuid']
-    client['outbound']['settings']['vnext'][0]['users'][0]['security'] = data['encrypt']
-
+    client['outbound']['settings']['vnext'][0]['users'][0]['security'] = data[
+        'encrypt']
 
     if data['trans'] == "websocket":
         client['outbound']['streamSettings']['network'] = "ws"
@@ -346,18 +357,11 @@ def gen_client():
     elif data['trans'] == "tcp":
         client['outbound']['streamSettings']['network'] = "tcp"
 
-
     if data['tls'] == "on":
         client['outbound']['streamSettings']['security'] = "tls"
 
-    client_file = open("/root/config.json","w")
-    client_file.write(json.dumps(client,indent=2))
-    client_file.close()
+    with open("/root/config.json", "w") as f:
+        f.write(json.dumps(client, indent=2))
 
-    client_file = open("/usr/local/V2ray.Fun/static/config.json", "w")
-    client_file.write(json.dumps(client, indent=2))
-    client_file.close()
-
-
-
-
+    with open("/usr/local/V2ray.Fun/static/config.json", "w") as f:
+        f.write(json.dumps(client, indent=2))
