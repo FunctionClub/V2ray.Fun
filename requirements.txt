@@ -1,8 +1,8 @@
 Flask==1.0.2
 Flask-BasicAuth==0.2.0
-Jinja2==2.10
+Jinja2 ==2.10.1
 pyOpenSSL==18.0.0
 requests>=2.20.0
 six==1.8.0
-urllib3==1.9.1
+urllib3==1.24.2
 wheel==0.24.0
