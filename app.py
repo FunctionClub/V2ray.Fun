@@ -8,7 +8,7 @@ from flask_basicauth import BasicAuth
 from config_generator import *  # noqa
 
 with open("panel.config") as f:
-    panel_config = json.loads(f.read())
+    panel_config = json.load(f)
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -20,7 +20,7 @@ basic_auth = BasicAuth(app)
 
 def change_config(config, value):
     with open("v2ray.config") as f:
-        old_json = json.loads(f)
+        old_json = json.load(f)
 
     old_json[str(config)] = str(value)
 
@@ -201,7 +201,7 @@ def config_page():
 @app.route('/get_info')
 def get_info():
     with open("v2ray.config") as v2ray_config:
-        json_content = json.loads(v2ray_config)
+        json_content = json.load(v2ray_config)
         if (json_content['domain'] != "none"):
             json_content['ip'] = json_content['domain']
 
@@ -258,7 +258,7 @@ def gen_ssl():
 
 
 with open("v2ray.config") as f:
-    data = json.loads(f.read())
+    data = json.load(f)
 
 if data['tls'] == "on" and panel_config['use_ssl'] == "on":
     key_file = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],
