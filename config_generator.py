@@ -1,14 +1,22 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
-import urllib2
 import commands
+import json
+
+import requests
+from requests.exceptions import ConnectTimeout
 
 
 def getip():
-    myip = urllib2.urlopen('https://cn.fdos.me/ip.php').read()
-    myip = myip.strip()
-    return str(myip)
+    try:
+        resp = requests.get("http://httpbin.org/ip", timeout=5).json()
+        ip = resp.get("origin").split(", ")[1]
+    except ConnectTimeout:
+        import socket
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+    return str(ip)
 
 
 def open_port(port):
