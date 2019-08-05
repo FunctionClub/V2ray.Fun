@@ -251,14 +251,14 @@ def gen_ssl():
 
     result = os.path.exists("/root/.acme.sh/{0}/fullchain.cer".format(domain))
     start_service()
-    if result == True:
+    if result is True:
         return "True"
     else:
         return "False"
 
 
 with open("v2ray.config") as f:
-    data = json.loads(f)
+    data = json.load(f)
 
 if data['tls'] == "on" and panel_config['use_ssl'] == "on":
     key_file = "/root/.acme.sh/{0}/{0}.key".format(data['domain'],
