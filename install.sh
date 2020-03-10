@@ -96,7 +96,8 @@ priority=1
 stopasgroup=true
 killasgroup=true
 EOF
-
+#Reload the supervisor after modifying the configuration
+supervisorctl reload
 
 read -p "请输入默认用户名[默认admin]： " un
 read -p "请输入默认登录密码[默认admin]： " pw
