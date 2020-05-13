@@ -10,7 +10,7 @@ from requests.exceptions import ConnectTimeout
 def getip():
     try:
         resp = requests.get("http://httpbin.org/ip", timeout=5).json()
-        ip = resp.get("origin").split(", ")[1]
+        ip = resp.get("origin").split(", ")[0]
     except ConnectTimeout:
         import socket
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
