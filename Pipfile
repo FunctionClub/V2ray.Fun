@@ -13,7 +13,7 @@ six = "==1.8.0"
 urllib3 = "==1.24.2"
 Flask = "==1.0.2"
 Flask-BasicAuth = "==0.2.0"
-Jinja2 = "==2.10.1"
+Jinja2 = "==2.11.3"
 pyOpenSSL = "==18.0.0"
 
 [requires]
